@@ -1,4 +1,5 @@
 import pygame
+import random
 
 import SpriteInfo as SI
 
@@ -16,15 +17,17 @@ def InitializeScreen():
 
 
 class Tile:
-    def __init__(self, sprite, interactable=False):
+    def __init__(self, sprite:pygame.Surface, walkable:bool=True):
         self.sprite = sprite
-        self.interactable = interactable
-        self.containedSprites = []
+        self.walkable = walkable
 
-    def TestSpriteAddition(self, sprite):
-        self.containedSprites.append(sprite)
+        self.terrain = None
+        self.unit = None
 
-    def Blit(self, screen, x, y, selected=False, selectable=False, addedSprites=[]):
+    def TestSpriteAddition(self, sprite:pygame.Surface):
+        self.unit = sprite
+
+    def Blit(self, screen:pygame.Surface, x:int, y:int, selected:bool=False, selectable:bool=False):
         heightChangeOfSelectedTile = -3 if selected else 0
         
         if selected:
@@ -32,24 +35,91 @@ class Tile:
         else:
             screen.blit(self.sprite, (x, y))
 
-        for item in self.containedSprites:
-            screen.blit(item, (x + containedSpritesXOffset, y - heightChangeOfSelectedTile - containedSpritesYOffset))
+        if self.terrain:
+            screen.blit(self.terrain, (x + containedSpritesXOffset, y - heightChangeOfSelectedTile - containedSpritesYOffset))
 
-        for item in addedSprites:
-            screen.blit(item, (x + containedSpritesXOffset, y - heightChangeOfSelectedTile - containedSpritesYOffset))
+        if self.unit:
+            screen.blit(self.unit, (x + containedSpritesXOffset, y - heightChangeOfSelectedTile - containedSpritesYOffset))
 
-def makeTileInteractable(sprite):
-    return(Tile(sprite, True))
+    def IsTileOppupied(self):
+        return True if (self.unit or self.terrain) else False
+    
+    def OccupyTile(self, unit):
+        if self.isTileOccupied(self) or not self.walkable:
+            return False
+        self.unit = unit
+        unit.tile = self
+        return True
+    
+    def UnOccupyTile(self):
+        if self.unit:
+            self.unit.tile = None
+            self.tile = None
 
-def makeTileUninteractable(sprite):
+def makeTileWalkable(sprite):
     return(Tile(sprite))
 
+def makeTileUnWalkable(sprite):
+    return(Tile(sprite, False))
 
 
 
-class Character:
-    def __init__(self, sprite, interactable):
+
+class Unit:
+    def __init__(self, name:str, sprite:pygame.surface, range:int, power:int,  defense:int, critChance:int, critDamage:int):
+        self.name = name
         self.sprite = sprite
-        self.interactable = interactable
 
+        self.range = range
+        self.power = power
+        self.defense = defense
+        self.critChance = critChance
+        self.critDamage = critDamage
 
+        self.alive = True
+
+        self.tile = None
+        self.screenPosition = None
+
+        def Blit(self, screen, x, y):
+            screen.blit(self.sprite, (x, y))
+
+        def Act(self):
+            pass
+
+class MovingUnit(Unit):
+    def __init__(self, name:str, sprite:pygame.surface, range:int, power:int, defense:int, critChance:int, critDamage:int, health:int, speed:int):
+        super().__init__(name, sprite, range, power, defense, critChance, critDamage)
+        self.health = health
+        self.speed = speed
+        self.targetTile = None
+
+        def setTargetTile(self, target):
+            self.targetTile = target
+
+        def moveTowardsTile(self, target):
+            if self.tile != self.targetTile:
+                pass
+        
+
+class PlayerCharacter(MovingUnit): 
+    def __init__(self, health, speed, range, power, critChance, critDamage):
+        self.health = health
+        self.speed = speed
+        self.range = range
+        self.power = power
+        self.critChance = critChance
+        self.critDamage = critDamage
+
+    def move(self):
+        pass
+
+    def attack(self):
+        pass
+
+    def takeDamage(self, damage):
+        self.health = max(0, self.health - damage)
+
+    def dealDamage(self, target):
+        chance = random.randint(1,100)
+        target.takeDamage(self.power + self.critDamage) if (chance <= self.critChance) else target.takeDamage(self.power)

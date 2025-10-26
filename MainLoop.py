@@ -3,7 +3,7 @@ import pygame
 import SpriteInfo as SI
 import ClassesAndVariables as CV
 import TileMaps as TM
-import TIleOperationFunction as TO
+import TIleOperationFunctions as TO
 import TileTransitions as TR
 
 
@@ -23,7 +23,7 @@ running = True
 # Variable that restricts the game logic depending on if its in a transition
 
 currentSelectedTile = None
-currentUnselectableTile = None
+currentselectableTile = None
 
 currentTileMap = TM.tileMap1
 nextTileMap = None
@@ -82,10 +82,10 @@ while running:
                 currentSelectedTile = tile
 
             if currentSelectedTile:    
-                if currentSelectedTile.interactable:
-                    currentUnselectableTile = None
+                if currentSelectedTile.walkable:
+                    currentselectableTile = None
                 else:
-                    currentUnselectableTile = currentSelectedTile
+                    currentselectableTile = currentSelectedTile
                     currentSelectedTile = None
 
 # Draws every tile in order of rendering
@@ -93,9 +93,9 @@ while running:
         tile = currentTileMap[tileZ][tileY][tileX]
         if not tile:
             continue
-        elif tile and tile.interactable and currentSelectedTile and tile == currentSelectedTile:
+        elif tile and tile.walkable and currentSelectedTile and tile == currentSelectedTile:
             tile.Blit(CV.screen, fromXToIsoX(tileX, tileY), fromYToIsoY(tileX, tileY, tileZ), True, True)
-        elif tile and currentUnselectableTile and tile == currentUnselectableTile:
+        elif tile and currentselectableTile and tile == currentselectableTile:
             tile.Blit(CV.screen, fromXToIsoX(tileX, tileY), fromYToIsoY(tileX, tileY, tileZ), True)
         else:
             tile.Blit(CV.screen, fromXToIsoX(tileX, tileY), fromYToIsoY(tileX, tileY, tileZ))
@@ -110,10 +110,10 @@ while running:
 # ALL MOUSE PRESSING EVENTS
             if (event.type == pygame.MOUSEBUTTONDOWN) and not paused:
                 if (event.button == 1):
-                    if currentSelectedTile and currentSelectedTile.interactable:
+                    if currentSelectedTile and currentSelectedTile.walkable:
                         currentSelectedTile.TestSpriteAddition(SI.AllyKnightStanding)
                 elif (event.button == 3):
-                    if currentSelectedTile and currentSelectedTile.interactable:
+                    if currentSelectedTile and currentSelectedTile.walkable:
                         currentSelectedTile.TestSpriteAddition(SI.EnemyKnightStanding)
 
 
