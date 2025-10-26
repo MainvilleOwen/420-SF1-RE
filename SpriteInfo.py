@@ -5,6 +5,11 @@ def LoadSpriteAssets():
      global tileHeight
      tileWidth, tileHeight = 64, 32
 
+# BACKGROUND IMAGES
+# Creating the background image sprite
+     global BackgroundSprite
+     BackgroundSprite = pygame.image.load("Assets/BackgroundFirstEdition.png")
+
 # TILE SPRITES
 # Creating Full Grass Tile Sprites
      global FullGrassTile 

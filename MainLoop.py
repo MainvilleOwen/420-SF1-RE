@@ -14,6 +14,7 @@ deltaTime = 0
 # Functions that load in all elements needed to start running the game *(ORDER MATTERS, THESE ARE ESSENTIAL)*
 CV.InitializeScreen()
 SI.LoadSpriteAssets()
+CV.CreateBackground(SI.BackgroundSprite)
 TM.CreateTileMaps()
 
 
@@ -57,7 +58,7 @@ def fromYToIsoY(x, y, z, offset=None):
 # THIS IS WHAT IS RAN/COMPUTED/CALLED EVERY SINGLE FRAME
 while running:
 # Clears the screen (BY filling it with Black) for new stuff to be drawn
-    CV.screen.fill((0, 0, 0))
+    CV.Background.ClearScreen()
 
     if not tileMapLoaded:
 
@@ -106,6 +107,15 @@ while running:
 # Close the window (X OUT)
             if (event.type == pygame.QUIT):
                 running = False
+
+            
+            if (event.type == pygame.VIDEORESIZE):
+                CV.screenWidth = max(event.w)
+                CV.screenHeight = max(event.h)
+
+                xAxisOffset = (CV.screenWidth//2 - SI.tileWidth/2) - (SI.tileWidth/2)*((TM.widthHeightDifference - 1)/2)
+                yAxisOffset = (CV.screenHeight//2 - (SI.tileHeight/2)*(TM.tileMapYLenght + 1))
+
 
 # ALL MOUSE PRESSING EVENTS
             if (event.type == pygame.MOUSEBUTTONDOWN) and not paused:

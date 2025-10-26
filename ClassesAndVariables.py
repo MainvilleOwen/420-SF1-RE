@@ -12,20 +12,40 @@ def InitializeScreen():
     global screen
     global screenWidth
     global screenHeight
-    screen = pygame.display.set_mode((0, 0))
+    screen = pygame.display.set_mode((0, 0), pygame.RESIZABLE)
     screenWidth, screenHeight = screen.get_width(), screen.get_height()
 
+class BackgroundClass:
+    def __init__(self, sprite):
+        self.sprite = sprite
 
+    def ResizeBackground(self):
+        self.sprite = pygame.transform.scale(SI.BackgroundSprite, (screenWidth, screenHeight))
+
+    def ClearScreen(self):
+        self.ResizeBackground()
+        screen.blit(self.sprite, (0,0))
+
+def CreateBackground(sprite):
+    global Background
+    Background = BackgroundClass(sprite)
+
+# Each Tile in the tilemap is its own object
 class Tile:
     def __init__(self, sprite:pygame.Surface, walkable:bool=True):
+# The image of the sprite
         self.sprite = sprite
+# If the sprite can be walked on by units
         self.walkable = walkable
 
+# If the tile contains any terrain elements, like trees or bushes or rocks, it will be stored here
         self.terrain = None
+
+# If the tile currently has a unit on it, the object of that unit will be stored here
         self.unit = None
 
     def TestSpriteAddition(self, sprite:pygame.Surface):
-        self.unit = sprite
+        self.unit = sprite if not self.TileOccupied() else self.unit
 
     def Blit(self, screen:pygame.Surface, x:int, y:int, selected:bool=False, selectable:bool=False):
         heightChangeOfSelectedTile = -3 if selected else 0
@@ -41,9 +61,11 @@ class Tile:
         if self.unit:
             screen.blit(self.unit, (x + containedSpritesXOffset, y - heightChangeOfSelectedTile - containedSpritesYOffset))
 
-    def IsTileOppupied(self):
+# Function that checks if the tile has a unit or a piece of terrain on it
+    def TileOccupied(self):
         return True if (self.unit or self.terrain) else False
     
+# Function that assigns a unit onto a tile
     def OccupyTile(self, unit):
         if self.isTileOccupied(self) or not self.walkable:
             return False
@@ -67,15 +89,28 @@ def makeTileUnWalkable(sprite):
 
 class Unit:
     def __init__(self, name:str, sprite:pygame.surface, range:int, power:int,  defense:int, critChance:int, critDamage:int):
+# Name that will be shown when Unit is selected
         self.name = name
+
+# Spritesheet of unit
         self.sprite = sprite
 
+# How far the unit can attack
         self.range = range
+
+# How powerful the unit's attack is
         self.power = power
+
+# How likely the unit is to dodge (RandInt generated, if it is higher than this the attack hits) AND how much damage they will ignore (% of the number?)
         self.defense = defense
+
+# How likely the unit is to deal extra damage with their attack
         self.critChance = critChance
+
+# How much extra damage the unit will deal if they
         self.critDamage = critDamage
 
+# If the unit still has health left
         self.alive = True
 
         self.tile = None
@@ -97,9 +132,16 @@ class MovingUnit(Unit):
         def setTargetTile(self, target):
             self.targetTile = target
 
-        def moveTowardsTile(self, target):
+        def moveTowardsTile(self, target:object):
             if self.tile != self.targetTile:
-                pass
+                self.targetTile = target
+
+        def takeDamage(self, damage):
+            self.health = max(0, self.health - damage)
+
+        def dealDamage(self, target):
+            chance = random.randint(1,100)
+            target.takeDamage(self.power + self.critDamage) if (chance <= self.critChance) else target.takeDamage(self.power)
         
 
 class PlayerCharacter(MovingUnit): 
@@ -116,10 +158,3 @@ class PlayerCharacter(MovingUnit):
 
     def attack(self):
         pass
-
-    def takeDamage(self, damage):
-        self.health = max(0, self.health - damage)
-
-    def dealDamage(self, target):
-        chance = random.randint(1,100)
-        target.takeDamage(self.power + self.critDamage) if (chance <= self.critChance) else target.takeDamage(self.power)

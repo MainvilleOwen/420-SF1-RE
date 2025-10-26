@@ -23,7 +23,7 @@ def liftTilesOffScreen(clock, tileList, tileMap, isoXConvert, isoYConvert):
     maxTileDelay = (TM.xMaxIndex + TM.yMaxIndex) * tileOffset
 
     while running:
-        CV.screen.fill((0, 0, 0))
+        CV.Background.ClearScreen()
 
         transitionTime += deltaTime
         progress = transitionTime/transitionDuration
@@ -61,7 +61,7 @@ def liftTilesOntoScreen(clock, tileList, tileMap, isoXConvert, isoYConvert):
     maxTileDelay = (TM.xMaxIndex + TM.yMaxIndex) * tileOffset
 
     while running:
-        CV.screen.fill((0, 0, 0))
+        CV.Background.ClearScreen()
 
         transitionTime += deltaTime
         progress = transitionTime/transitionDuration
@@ -97,7 +97,7 @@ def swapTilesOnScreenPos(clock, originalTileList, rotatedTileList, originalTileM
     maxTileDelay = (TM.xMaxIndex + TM.yMaxIndex) * tileOffset
 
     while running:
-        CV.screen.fill((0, 0, 0))
+        CV.Background.ClearScreen()
 
         transitionTime += deltaTime
         progress = transitionTime/transitionDuration
@@ -148,7 +148,7 @@ def swapTilesOnScreenNeg(clock, originalTileList, rotatedTileList, originalTileM
     maxTileDelay = (TM.xMaxIndex + TM.yMaxIndex) * tileOffset
 
     while running:
-        CV.screen.fill((0, 0, 0))
+        CV.Background.ClearScreen()
 
         transitionTime += deltaTime
         progress = transitionTime/transitionDuration
