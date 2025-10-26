@@ -3,6 +3,8 @@ import pygame
 import ClassesAndVariables as CV
 import TileMaps as TM
 
+maxLiftMinimum = 800
+
 def clampFunc(val, a=0, b=1):
     return max(a, min(b, val))
 
@@ -16,7 +18,7 @@ def liftTilesOffScreen(clock, tileList, tileMap, isoXConvert, isoYConvert):
 
     transitionTime = 0.0
     transitionDuration = 0.9
-    maxLift = CV.screenHeight
+    maxLift = max(maxLiftMinimum, CV.screenHeight)
 
     tileOffset = 0.02
 
@@ -54,7 +56,7 @@ def liftTilesOntoScreen(clock, tileList, tileMap, isoXConvert, isoYConvert):
 
     transitionTime = 0.0
     transitionDuration = 0.9
-    maxLift = CV.screenHeight
+    maxLift = max(maxLiftMinimum, CV.screenHeight)
 
     tileOffset = 0.02
 
@@ -91,7 +93,7 @@ def swapTilesOnScreenPos(clock, originalTileList, rotatedTileList, originalTileM
 
     transitionTime = 0.0
     transitionDuration = 1.2
-    maxLift = CV.screenHeight
+    maxLift = max(maxLiftMinimum, CV.screenHeight)
 
     tileOffset = 0.02
     maxTileDelay = (TM.xMaxIndex + TM.yMaxIndex) * tileOffset
@@ -142,7 +144,7 @@ def swapTilesOnScreenNeg(clock, originalTileList, rotatedTileList, originalTileM
 
     transitionTime = 0.0
     transitionDuration = 1.2
-    maxLift = CV.screenHeight
+    maxLift = max(maxLiftMinimum, CV.screenHeight)
 
     tileOffset = 0.02
     maxTileDelay = (TM.xMaxIndex + TM.yMaxIndex) * tileOffset
