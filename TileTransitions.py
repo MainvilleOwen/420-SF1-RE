@@ -3,7 +3,7 @@ import pygame
 import ClassesAndVariables as CV
 import TileMaps as TM
 
-maxLiftMinimum = 800
+maxLiftMinimum = 900
 
 def clampFunc(val, a=0, b=1):
     return max(a, min(b, val))
