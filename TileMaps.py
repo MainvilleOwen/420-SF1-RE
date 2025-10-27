@@ -1,26 +1,26 @@
-import ClassesAndVariables as CV
+import TileClass as T
 import SpriteInfo as SI
 
 def FG():
-    return(CV.makeTileWalkable(SI.FullGrassTile))
+    return(T.makeTileWalkable(SI.FullGrassTile))
 
 def FN():
-    return(CV.makeTileUnWalkable(SI.FullGrassTile))
+    return(T.makeTileUnWalkable(SI.FullGrassTile))
 
 def RG():
-    return(CV.makeTileWalkable(SI.RockGrassTile))
+    return(T.makeTileWalkable(SI.RockGrassTile))
 
 def RN():
-    return(CV.makeTileUnWalkable(SI.RockGrassTile))
+    return(T.makeTileUnWalkable(SI.RockGrassTile))
 
 def Wr():
-    return(CV.makeTileUnWalkable(SI.WaterTile))
+    return(T.makeTileUnWalkable(SI.WaterTile))
 
 def DS():
-    return(CV.makeTileWalkable(SI.DesertSandTile))
+    return(T.makeTileWalkable(SI.DesertSandTile))
 
 def DN():
-    return(CV.makeTileUnWalkable(SI.DesertSandTile))
+    return(T.makeTileUnWalkable(SI.DesertSandTile))
 
 def CreateTileMaps():
 # These are the tilemaps. They are nested lists that act as 2d matrices.

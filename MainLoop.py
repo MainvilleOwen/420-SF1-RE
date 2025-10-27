@@ -2,9 +2,13 @@ import pygame
 
 import SpriteInfo as SI
 import ClassesAndVariables as CV
+
+import TileClass as T
 import TileMaps as TM
 import TIleOperationFunctions as TO
 import TileTransitions as TR
+
+import BackgroundClass as B
 
 
 # Getting the clock to be able to control framerate, and getting deltaTime which is the time between current and last frame (0 for the first frame)
@@ -14,7 +18,7 @@ deltaTime = 0
 # Functions that load in all elements needed to start running the game *(ORDER MATTERS, THESE ARE ESSENTIAL)*
 CV.InitializeScreen()
 SI.LoadSpriteAssets()
-CV.CreateBackground(SI.BackgroundSprite)
+B.CreateBackground(SI.BackgroundSprite)
 TM.CreateTileMaps()
 
 
@@ -56,7 +60,7 @@ def fromYToIsoY(x, y, z, offset=None):
 # THIS IS WHAT IS RAN/COMPUTED/CALLED EVERY SINGLE FRAME
 while running:
 # Clears the screen (BY filling it with Black) for new stuff to be drawn
-    CV.Background.ClearScreen()
+    B.Background.ClearScreen()
 
     if not tileMapLoaded:
 

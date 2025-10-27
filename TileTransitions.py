@@ -3,6 +3,8 @@ import pygame
 import ClassesAndVariables as CV
 import TileMaps as TM
 
+import BackgroundClass as B
+
 maxLiftMinimum = 900
 
 def clampFunc(val, a=0, b=1):
@@ -25,7 +27,7 @@ def liftTilesOffScreen(clock, tileList, tileMap, isoXConvert, isoYConvert):
     maxTileDelay = (TM.xMaxIndex + TM.yMaxIndex) * tileOffset
 
     while running:
-        CV.Background.ClearScreen()
+        B.Background.ClearScreen()
 
         transitionTime += deltaTime
         progress = transitionTime/transitionDuration
@@ -63,7 +65,7 @@ def liftTilesOntoScreen(clock, tileList, tileMap, isoXConvert, isoYConvert):
     maxTileDelay = (TM.xMaxIndex + TM.yMaxIndex) * tileOffset
 
     while running:
-        CV.Background.ClearScreen()
+        B.Background.ClearScreen()
 
         transitionTime += deltaTime
         progress = transitionTime/transitionDuration
@@ -99,7 +101,7 @@ def swapTilesOnScreenPos(clock, originalTileList, rotatedTileList, originalTileM
     maxTileDelay = (TM.xMaxIndex + TM.yMaxIndex) * tileOffset
 
     while running:
-        CV.Background.ClearScreen()
+        B.Background.ClearScreen()
 
         transitionTime += deltaTime
         progress = transitionTime/transitionDuration
@@ -150,7 +152,7 @@ def swapTilesOnScreenNeg(clock, originalTileList, rotatedTileList, originalTileM
     maxTileDelay = (TM.xMaxIndex + TM.yMaxIndex) * tileOffset
 
     while running:
-        CV.Background.ClearScreen()
+        B.Background.ClearScreen()
 
         transitionTime += deltaTime
         progress = transitionTime/transitionDuration
