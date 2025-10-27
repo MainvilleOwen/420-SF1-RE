@@ -26,6 +26,9 @@ class BackgroundClass:
         self.ResizeBackground()
         screen.blit(self.sprite, (0,0))
 
+    def ChangeBackground(self, sprite:pygame.Surface):
+        self.sprite = sprite
+
 def CreateBackground(sprite):
     global Background
     Background = BackgroundClass(sprite)

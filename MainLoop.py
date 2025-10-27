@@ -172,6 +172,9 @@ while running:
                         CV.screen = pygame.display.set_mode((960, 540), pygame.RESIZABLE)
                         CV.screenWidth, CV.screenHeight = CV.screen.get_width(), CV.screen.get_height()
 
+                    xAxisOffset = (CV.screenWidth//2 - SI.tileWidth/2) - (SI.tileWidth/2)*((TM.widthHeightDifference - 1)/2)
+                    yAxisOffset = (CV.screenHeight//2 - (SI.tileHeight/2)*(TM.tileMapYLenght + 1))
+
                     CV.Background.ResizeBackground()
 
 
