@@ -12,7 +12,7 @@ def InitializeScreen():
     global screen
     global screenWidth
     global screenHeight
-    screen = pygame.display.set_mode((960, 540), pygame.RESIZABLE)
+    screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
     screenWidth, screenHeight = screen.get_width(), screen.get_height()
 
 class BackgroundClass:
@@ -117,10 +117,6 @@ class Unit:
         self.alive = True
 
         self.tile = None
-        self.screenPosition = None
-
-        def Blit(self, screen, x, y):
-            screen.blit(self.sprite, (x, y))
 
         def Act(self):
             pass
@@ -130,7 +126,6 @@ class MovingUnit(Unit):
         super().__init__(name, sprite, range, power, defense, critChance, critDamage)
         self.health = health
         self.speed = speed
-        self.targetTile = None
 
         def setTargetTile(self, target):
             self.targetTile = target
@@ -145,6 +140,9 @@ class MovingUnit(Unit):
         def dealDamage(self, target):
             chance = random.randint(1,100)
             target.takeDamage(self.power + self.critDamage) if (chance <= self.critChance) else target.takeDamage(self.power)
+
+        def DoMovingAnimation(self, target):
+            pass
         
 
 class PlayerCharacter(MovingUnit): 

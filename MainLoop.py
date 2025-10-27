@@ -21,11 +21,8 @@ TM.CreateTileMaps()
 # The variable that if true lets the loop run, if false closes the program
 running = True
 
-# Variable that restricts the game logic depending on if its in a transition
-
 currentSelectedTile = None
-currentselectableTile = None
-fullscreen = False
+currentSelectedSelectableTile = None
 
 currentTileMap = TM.tileMap1
 nextTileMap = None
@@ -85,9 +82,9 @@ while running:
 
             if currentSelectedTile:    
                 if currentSelectedTile.walkable:
-                    currentselectableTile = None
+                    currentSelectedSelectableTile = None
                 else:
-                    currentselectableTile = currentSelectedTile
+                    currentSelectedSelectableTile = currentSelectedTile
                     currentSelectedTile = None
 
 # Draws every tile in order of rendering
@@ -97,7 +94,7 @@ while running:
             continue
         elif tile and tile.walkable and currentSelectedTile and tile == currentSelectedTile:
             tile.Blit(CV.screen, fromXToIsoX(tileX, tileY), fromYToIsoY(tileX, tileY, tileZ), True, True)
-        elif tile and currentselectableTile and tile == currentselectableTile:
+        elif tile and currentSelectedSelectableTile and tile == currentSelectedSelectableTile:
             tile.Blit(CV.screen, fromXToIsoX(tileX, tileY), fromYToIsoY(tileX, tileY, tileZ), True)
         else:
             tile.Blit(CV.screen, fromXToIsoX(tileX, tileY), fromYToIsoY(tileX, tileY, tileZ))
@@ -162,23 +159,11 @@ while running:
                     tilesToDraw = TO.TileDrawOrder(currentTileMap)
 
                 if (event.key == pygame.K_ESCAPE):
+                    TR.liftTilesOffScreen(clock, tilesToDraw, currentTileMap, fromXToIsoX,  fromYToIsoY)
+                    running = False
+
                     currentSelectedTile = None
                     paused = not paused
-
-                if (event.key == pygame.K_f):
-                    if not fullscreen:
-                        CV.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
-                        CV.screenWidth, CV.screenHeight = CV.screen.get_width(), CV.screen.get_height()
-                    elif fullscreen:
-                        CV.screen = pygame.display.set_mode((960, 540), pygame.RESIZABLE)
-                        CV.screenWidth, CV.screenHeight = CV.screen.get_width(), CV.screen.get_height()
-
-                    fullscreen = not fullscreen
-
-                    xAxisOffset = (CV.screenWidth//2 - SI.tileWidth/2) - (SI.tileWidth/2)*((TM.widthHeightDifference - 1)/2)
-                    yAxisOffset = (CV.screenHeight//2 - (SI.tileHeight/2)*(TM.tileMapYLenght + 1))
-
-                    CV.Background.ResizeBackground()
 
 
 # Uploads everything drawn to the screen basically
