@@ -25,6 +25,7 @@ running = True
 
 currentSelectedTile = None
 currentselectableTile = None
+fullscreen = False
 
 currentTileMap = TM.tileMap1
 nextTileMap = None
@@ -129,10 +130,6 @@ while running:
 
 # ALL MOUSE PRESSING EVENTS
             if (event.type == pygame.KEYDOWN):
-# Close the window (ESCAPE KEY)
-                if (event.key == pygame.K_ESCAPE) and not paused:
-                    TR.liftTilesOffScreen(clock, tilesToDraw, currentTileMap, fromXToIsoX,  fromYToIsoY)
-                    running = False
 
 # Rotate the tileMap 90 degrees clockwise\counterclockwise and calculates the new tileDrawOrder, which is stored
 # New and Old tilemap are then swapped with replacement animation (In trileTransitions.py)
@@ -162,9 +159,20 @@ while running:
                     currentTileMap = TM.tileMap1
                     tilesToDraw = TO.TileDrawOrder(currentTileMap)
 
-                if (event.key == pygame.K_f):
+                if (event.key == pygame.K_ESCAPE):
                     currentSelectedTile = None
                     paused = not paused
+
+                if (event.key == pygame.K_f):
+                    fullscreen = not fullscreen
+                    if not fullscreen:
+                        CV.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+                        CV.screenWidth, CV.screenHeight = CV.screen.get_width(), CV.screen.get_height()
+                    elif fullscreen:
+                        CV.screen = pygame.display.set_mode((960, 540), pygame.RESIZABLE)
+                        CV.screenWidth, CV.screenHeight = CV.screen.get_width(), CV.screen.get_height()
+
+                    CV.Background.ResizeBackground()
 
 
 # Uploads everything drawn to the screen basically
