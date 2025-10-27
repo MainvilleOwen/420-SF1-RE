@@ -107,12 +107,14 @@ while running:
     for event in pygame.event.get():
 # Close the window (X OUT)
             if (event.type == pygame.QUIT):
+                TR.liftTilesOffScreen(clock, tilesToDraw, currentTileMap, fromXToIsoX, fromYToIsoY)
                 running = False
 
             
             if (event.type == pygame.VIDEORESIZE):
                 CV.screenWidth = max(event.w, 960)
                 CV.screenHeight = max(event.h, 540)
+                CV.screen = pygame.display.set_mode((CV.screenWidth,CV.screenHeight), pygame.RESIZABLE)
 
                 xAxisOffset = (CV.screenWidth//2 - SI.tileWidth/2) - (SI.tileWidth/2)*((TM.widthHeightDifference - 1)/2)
                 yAxisOffset = (CV.screenHeight//2 - (SI.tileHeight/2)*(TM.tileMapYLenght + 1))
@@ -164,13 +166,14 @@ while running:
                     paused = not paused
 
                 if (event.key == pygame.K_f):
-                    fullscreen = not fullscreen
                     if not fullscreen:
                         CV.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
                         CV.screenWidth, CV.screenHeight = CV.screen.get_width(), CV.screen.get_height()
                     elif fullscreen:
                         CV.screen = pygame.display.set_mode((960, 540), pygame.RESIZABLE)
                         CV.screenWidth, CV.screenHeight = CV.screen.get_width(), CV.screen.get_height()
+
+                    fullscreen = not fullscreen
 
                     xAxisOffset = (CV.screenWidth//2 - SI.tileWidth/2) - (SI.tileWidth/2)*((TM.widthHeightDifference - 1)/2)
                     yAxisOffset = (CV.screenHeight//2 - (SI.tileHeight/2)*(TM.tileMapYLenght + 1))
