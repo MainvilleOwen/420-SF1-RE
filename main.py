@@ -3,11 +3,11 @@ import pygame
 import SpriteInfo as SI
 import Screen as S
 
-import TileClass as T
-import TileMaps as TM
+import TileClassAndOperations.TileClass as T
+import TileClassAndOperations.TileMaps as TM
 
-import TIleOperations as TO
-import TileTransitions as TR
+import TileClassAndOperations.TIleOperations as TO
+import TileClassAndOperations.TileTransitions as TR
 
 import BackgroundClass as B
 

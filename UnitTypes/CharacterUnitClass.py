@@ -1,7 +1,7 @@
 import pygame
 import random
 
-from UnitClass import Unit
+from UnitTypes.UnitClass import Unit
 
 class CharacterUnit(Unit):
     def __init__(self, name:str, spritesheet:pygame.surface, sprite:pygame.surface, reach:int, power:int, critChance:int, critDamage:int, health:int, speed:int, defense:int):
