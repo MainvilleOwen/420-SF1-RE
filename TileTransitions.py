@@ -1,6 +1,6 @@
 import pygame
 
-import ClassesAndVariables as CV
+import Screen as S
 import TileMaps as TM
 
 import BackgroundClass as B
@@ -20,7 +20,7 @@ def liftTilesOffScreen(clock, tileList, tileMap, isoXConvert, isoYConvert):
 
     transitionTime = 0.0
     transitionDuration = 0.9
-    maxLift = max(maxLiftMinimum, CV.screenHeight)
+    maxLift = max(maxLiftMinimum, S.screenHeight)
 
     tileOffset = 0.02
 
@@ -43,7 +43,7 @@ def liftTilesOffScreen(clock, tileList, tileMap, isoXConvert, isoYConvert):
 
             if not tile:
                 continue
-            tile.Blit(CV.screen, isoXConvert(tileX, tileY), isoYConvert(tileX, tileY, tileZ) - lift)
+            tile.Blit(S.screen, isoXConvert(tileX, tileY), isoYConvert(tileX, tileY, tileZ) - lift)
 
         pygame.display.flip()
         deltaTime = clock.tick(60)/1000
@@ -52,13 +52,14 @@ def liftTilesOffScreen(clock, tileList, tileMap, isoXConvert, isoYConvert):
             break
 
 
+
 def liftTilesOntoScreen(clock, tileList, tileMap, isoXConvert, isoYConvert):
     running = True
     deltaTime = 0.0
 
     transitionTime = 0.0
     transitionDuration = 0.9
-    maxLift = max(maxLiftMinimum, CV.screenHeight)
+    maxLift = max(maxLiftMinimum, S.screenHeight)
 
     tileOffset = 0.02
 
@@ -81,7 +82,7 @@ def liftTilesOntoScreen(clock, tileList, tileMap, isoXConvert, isoYConvert):
 
             if not tile:
                 continue
-            tile.Blit(CV.screen, isoXConvert(tileX, tileY), isoYConvert(tileX, tileY, tileZ) + maxLift - lift)
+            tile.Blit(S.screen, isoXConvert(tileX, tileY), isoYConvert(tileX, tileY, tileZ) + maxLift - lift)
 
         pygame.display.flip()
         deltaTime = clock.tick(60)/1000
@@ -95,7 +96,7 @@ def swapTilesOnScreenPos(clock, originalTileList, rotatedTileList, originalTileM
 
     transitionTime = 0.0
     transitionDuration = 1.2
-    maxLift = max(maxLiftMinimum, CV.screenHeight)
+    maxLift = max(maxLiftMinimum, S.screenHeight)
 
     tileOffset = 0.02
     maxTileDelay = (TM.xMaxIndex + TM.yMaxIndex) * tileOffset
@@ -116,7 +117,7 @@ def swapTilesOnScreenPos(clock, originalTileList, rotatedTileList, originalTileM
                 tileProgress = clampFunc(progress - tileDelay)
                 lift = maxLift * smoothStepFunc(tileProgress)
 
-                tile.Blit(CV.screen, isoXConvert(tileX, tileY), isoYConvert(tileX, tileY, tileZ) - lift)
+                tile.Blit(S.screen, isoXConvert(tileX, tileY), isoYConvert(tileX, tileY, tileZ) - lift)
 
 
         for (tileX, tileY, tileZ) in rotatedTileList:
@@ -129,12 +130,12 @@ def swapTilesOnScreenPos(clock, originalTileList, rotatedTileList, originalTileM
                 tileProgress = clampFunc(progress - tileDelay)
                 lift = maxLift * smoothStepFunc(tileProgress)
 
-                tile.Blit(CV.screen, isoXConvert(tileX, tileY), isoYConvert(tileX, tileY, tileZ) + maxLift - lift)
+                tile.Blit(S.screen, isoXConvert(tileX, tileY), isoYConvert(tileX, tileY, tileZ) + maxLift - lift)
 
         pygame.display.flip()
         deltaTime = clock.tick(60)/1000
 
-        if progress <= 0.1 + maxTileDelay:
+        if transitionTime <= 0.4:
             pygame.event.clear()
 
         if progress >= 1.0 + maxTileDelay:
@@ -146,7 +147,7 @@ def swapTilesOnScreenNeg(clock, originalTileList, rotatedTileList, originalTileM
 
     transitionTime = 0.0
     transitionDuration = 1.2
-    maxLift = max(maxLiftMinimum, CV.screenHeight)
+    maxLift = max(maxLiftMinimum, S.screenHeight)
 
     tileOffset = 0.02
     maxTileDelay = (TM.xMaxIndex + TM.yMaxIndex) * tileOffset
@@ -167,7 +168,7 @@ def swapTilesOnScreenNeg(clock, originalTileList, rotatedTileList, originalTileM
                 tileProgress = clampFunc(progress - tileDelay)
                 lift = maxLift * smoothStepFunc(tileProgress)
 
-                tile.Blit(CV.screen, isoXConvert(tileX, tileY), isoYConvert(tileX, tileY, tileZ) + lift)
+                tile.Blit(S.screen, isoXConvert(tileX, tileY), isoYConvert(tileX, tileY, tileZ) + lift)
 
 
         for (tileX, tileY, tileZ) in rotatedTileList:
@@ -180,12 +181,12 @@ def swapTilesOnScreenNeg(clock, originalTileList, rotatedTileList, originalTileM
                 tileProgress = clampFunc(progress - tileDelay)
                 lift = maxLift * smoothStepFunc(tileProgress)
 
-                tile.Blit(CV.screen, isoXConvert(tileX, tileY), isoYConvert(tileX, tileY, tileZ) - maxLift + lift)
+                tile.Blit(S.screen, isoXConvert(tileX, tileY), isoYConvert(tileX, tileY, tileZ) - maxLift + lift)
 
         pygame.display.flip()
         deltaTime = clock.tick(60)/1000
 
-        if progress <= 0.1 + maxTileDelay:
+        if transitionTime <= 0.4:
             pygame.event.clear()
 
         if progress >= 1.0 + maxTileDelay:

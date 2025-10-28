@@ -72,9 +72,10 @@ def CreateTileMaps():
                   [None, None, None, None, None, None, None, None, None, None, None, None, None, None]]]
 
 # This is the order of the tilemaps from bottom to top. This list is used to know what order to draw them in
+def SetTileMapInfo(tileMap):
     global tileMapXLenght
     global tileMapYLenght
-    tileMapXLenght, tileMapYLenght = len(tileMap1[0][0]), len(tileMap1[0])
+    tileMapXLenght, tileMapYLenght = len(tileMap[0][0]), len(tileMap[0])
 
     global widthHeightDifference
     widthHeightDifference = (tileMapXLenght - tileMapYLenght)
@@ -82,4 +83,4 @@ def CreateTileMaps():
     global zMaxIndex
     global yMaxIndex
     global xMaxIndex
-    zMaxIndex, yMaxIndex, xMaxIndex = (len(tileMap1)-1), (len(tileMap1[0])-1), (len(tileMap1[0][0])-1)
+    zMaxIndex, yMaxIndex, xMaxIndex = (len(tileMap)-1), (len(tileMap[0])-1), (len(tileMap[0][0])-1)

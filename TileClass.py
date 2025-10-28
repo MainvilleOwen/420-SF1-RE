@@ -20,6 +20,8 @@ class Tile:
 # If the tile currently has a unit on it, the object of that unit will be stored here
         self.unit = None
 
+        self.x, self.y, self.z = None, None, None
+
     def TestSpriteAddition(self, sprite:pygame.Surface):
         self.unit = sprite if not self.TileOccupied() else self.unit
 
