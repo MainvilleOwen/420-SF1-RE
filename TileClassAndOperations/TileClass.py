@@ -1,10 +1,6 @@
 import pygame
 import SpriteInfo as SI
-
-
-heightChangeOfSelectedTile = 3
-containedSpritesYOffset = 32
-containedSpritesXOffset = 17
+import Screen as S
 
 # Each Tile in the tilemap is its own object
 class Tile:
@@ -25,27 +21,39 @@ class Tile:
     def TestSpriteAddition(self, sprite:pygame.Surface):
         self.unit = sprite if not self.TileOccupied() else self.unit
 
-    def Blit(self, screen:pygame.Surface, x:int, y:int, selected:bool=False, selectable:bool=False):
-        heightChangeOfSelectedTile = -3 if selected else 0
-        
-        if selected:
-            screen.blit(SI.tileSelectedConversion[self.sprite] if selectable else SI.tileUnselectableConversion[self.sprite], (x, y - heightChangeOfSelectedTile))
+    def BlitWhileSelected(self, screen:pygame.Surface, x:int, y:int):
+        heightChangeFactor = -2
+
+        if self.walkable:
+
+            screen.blit(SI.tileSelectedConversion[self.sprite], (x, y + heightChangeFactor))
+
+            if self.unit:
+                self.unit.Blit(screen, x + (self.sprite.get_width())//4, y + heightChangeFactor)
+
         else:
-            screen.blit(self.sprite, (x, y))
+            screen.blit(SI.tileUnselectableConversion[self.sprite], (x, y + heightChangeFactor))
+
+            if self.terrain:
+                screen.blit(self.terrain, (x, y + heightChangeFactor))
+
+
+    def Blit(self, screen:pygame.Surface, x:int, y:int, selected:bool=False, selectable:bool=False):
+        screen.blit(self.sprite, (x, y))
 
         if self.terrain:
-            screen.blit(self.terrain, (x + containedSpritesXOffset, y - heightChangeOfSelectedTile - containedSpritesYOffset))
+            screen.blit(self.terrain, (x, y))
 
         if self.unit:
-            screen.blit(self.unit, (x + containedSpritesXOffset, y - heightChangeOfSelectedTile - containedSpritesYOffset))
+            self.unit.Blit(screen, x + (self.sprite.get_width())//4, y)
 
 # Function that checks if the tile has a unit or a piece of terrain on it
     def TileOccupied(self):
         return True if (self.unit or self.terrain) else False
     
 # Function that assigns a unit onto a tile
-    def OccupyTile(self, unit):
-        if self.isTileOccupied(self) or not self.walkable:
+    def OccupyTile(self, unit:object):
+        if self.TileOccupied() or not self.walkable:
             return False
         self.unit = unit
         unit.tile = self

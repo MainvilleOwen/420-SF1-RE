@@ -11,7 +11,11 @@ class Unit:
 # Spritesheet of unit
         self.spritesheet = spritesheet
 # Current sprite used by the unit
-        self.sprite = None
+        self.sprite = spritesheet
+        self.heightOfSprite = self.sprite.get_height()
+
+        self.facingLeft = True
+        self.facingFront = True
 
 # How far the unit can attack
         self.reach = reach
@@ -45,3 +49,21 @@ class Unit:
         if not target.CheckForLife():
             target.KillSelf()
         
+    def Blit(self, screen:pygame.surface, x:int, y:int):
+        screen.blit(self.sprite, (x, y - self.heightOfSprite + 32))
+
+    def FaceLeft(self):
+        if not self.facingLeft:
+            self.sprite = pygame.transform.flip(self.sprite, True, False)
+            return True
+        return False
+    
+    def FaceRight(self):
+        if self.facingLeft:
+            self.sprite = pygame.transform.flip(self.sprite, True, False)
+            return True
+        return False
+    
+    def FaceFront(self):
+        if not self.facingFront:
+            pass

@@ -6,6 +6,9 @@ import Screen as S
 import TileClassAndOperations.TileClass as T
 import TileClassAndOperations.TileMaps as TM
 
+from UnitTypes import PlayerCharacterUnitClass as PC
+from UnitTypes import EnemyCharacterUnitClass as EC
+
 import TileClassAndOperations.TIleOperations as TO
 import TileClassAndOperations.TileTransitions as TR
 
@@ -29,7 +32,6 @@ TM.CreateTileMaps()
 running = True
 
 currentSelectedTile = None
-currentSelectedSelectableTile = None
 
 currentTileMap = TM.tileMap1
 TM.SetTileMapInfo(TM.tileMap1)
@@ -89,22 +91,13 @@ while running:
             if tile and tile != currentSelectedTile and (abs(diffX)/32 + abs(diffY)/16) <= 1:
                 currentSelectedTile = tile
 
-            if currentSelectedTile:    
-                if currentSelectedTile.walkable:
-                    currentSelectedSelectableTile = None
-                else:
-                    currentSelectedSelectableTile = currentSelectedTile
-                    currentSelectedTile = None
-
 # Draws every tile in order of rendering
     for (tileX, tileY, tileZ) in tilesToDraw:
         tile = currentTileMap[tileZ][tileY][tileX]
         if not tile:
             continue
-        elif tile and tile.walkable and currentSelectedTile and tile == currentSelectedTile:
-            tile.Blit(S.screen, fromXToIsoX(tileX, tileY), fromYToIsoY(tileX, tileY, tileZ), True, True)
-        elif tile and currentSelectedSelectableTile and tile == currentSelectedSelectableTile:
-            tile.Blit(S.screen, fromXToIsoX(tileX, tileY), fromYToIsoY(tileX, tileY, tileZ), True)
+        elif currentSelectedTile and tile == currentSelectedTile:
+            tile.BlitWhileSelected(S.screen, fromXToIsoX(tileX, tileY), fromYToIsoY(tileX, tileY, tileZ))
         else:
             tile.Blit(S.screen, fromXToIsoX(tileX, tileY), fromYToIsoY(tileX, tileY, tileZ))
 
@@ -130,10 +123,18 @@ while running:
             if (event.type == pygame.MOUSEBUTTONDOWN) and not paused:
                 if (event.button == 1):
                     if currentSelectedTile and currentSelectedTile.walkable:
-                        currentSelectedTile.TestSpriteAddition(SI.AllyKnightStanding)
+                        if not currentSelectedTile.TileOccupied():
+                            currentSelectedTile.OccupyTile(PC.PlayerCharacterUnit(name="Knight", spritesheet=SI.AllyKnightStanding, sprite=SI.AllyKnightStanding, reach=1, power=1, critChance=1, critDamage=1, health=1, speed=1, defense=1))
+                        else:
+                            currentSelectedTile.unit.FaceLeft()
+                            currentSelectedTile.unit.FaceRight()
                 elif (event.button == 3):
                     if currentSelectedTile and currentSelectedTile.walkable:
-                        currentSelectedTile.TestSpriteAddition(SI.EnemyKnightStanding)
+                        if not currentSelectedTile.TileOccupied():
+                            currentSelectedTile.OccupyTile(EC.EnemyCharacterUnit(name="Enemy", spritesheet=SI.EnemyKnightStanding, sprite=SI.EnemyKnightStanding, reach=1, power=1, critChance=1, critDamage=1, health=1, speed=1, defense=1))
+                        else:
+                            currentSelectedTile.unit.FaceLeft()
+                            currentSelectedTile.unit.FaceRight()
 
 
 # ALL MOUSE PRESSING EVENTS
