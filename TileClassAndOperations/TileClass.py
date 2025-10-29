@@ -63,8 +63,8 @@ class Tile:
             self.unit.tile = None
             self.unit = None
 
-    def GetNeighbouringTiles(self, tileMap):
-        neighbouringTiles = []
+    def GetAdjacentTiles(self, tileMap):
+        adjacentTiles = []
 
         x, y, z = self.x, self.y, self.z
 
@@ -74,12 +74,12 @@ class Tile:
         for xOffset, yOffset in xAndYOffsets:
 
             for zOffset in zOffsets:
-                neighbouringTile = SafelyGetTile(tileMap, x + xOffset, y + yOffset, z + zOffset)
-                if neighbouringTile and neighbouringTile.walkable:
-                    neighbouringTiles.append(neighbouringTile)
+                adjacentTile = SafelyGetTile(tileMap, x + xOffset, y + yOffset, z + zOffset)
+                if adjacentTile and adjacentTile.walkable:
+                    adjacentTiles.append(adjacentTile)
                     break
 
-        return neighbouringTiles
+        return adjacentTiles
 
     
 
