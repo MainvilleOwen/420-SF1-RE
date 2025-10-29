@@ -38,7 +38,21 @@ def TileDrawOrder(tileMap):
 
 def RotateTileMap90pos(tileMap):
     return [[list(row) for row in zip(*layer[::-1])] for layer in tileMap]
-
 def RotateTileMap90neg(tileMap):
     return [[list(row) for row in zip(*layer)][::-1] for layer in tileMap]
+
+
+
+def SafelyGetTile(tileMap, x, y, z):
+    if z < 0 or z >= len(tileMap): return None
+    if y < 0 or y >= len(tileMap[z]): return None
+    if x < 0 or x >= len(tileMap[z][y]): return None
+    
+    return(tileMap[z][y][x])
+        
+
+
+        
+    
+
 

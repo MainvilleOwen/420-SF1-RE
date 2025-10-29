@@ -2,6 +2,8 @@ import pygame
 import SpriteInfo as SI
 import Screen as S
 
+from TIleOperations import SafelyGetTile
+
 # Each Tile in the tilemap is its own object
 class Tile:
     def __init__(self, sprite:pygame.Surface, walkable:bool=True):
@@ -17,9 +19,6 @@ class Tile:
         self.unit = None
 
         self.x, self.y, self.z = None, None, None
-
-    def TestSpriteAddition(self, sprite:pygame.Surface):
-        self.unit = sprite if not self.TileOccupied() else self.unit
 
     def BlitWhileSelected(self, screen:pygame.Surface, x:int, y:int):
         heightChangeFactor = -2
@@ -62,11 +61,31 @@ class Tile:
     def UnOccupyTile(self):
         if self.unit:
             self.unit.tile = None
-            self.tile = None
+            self.unit = None
 
-def makeTileWalkable(sprite):
+    def GetNeighbouringTiles(self, tileMap):
+        neighbouringTiles = []
+
+        x, y, z = self.x, self.y, self.z
+
+        xAndYOffsets = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+        zOffsets = [1, 0, -1]
+
+        for xOffset, yOffset in xAndYOffsets:
+
+            for zOffset in zOffsets:
+                neighbouringTile = SafelyGetTile(tileMap, x + xOffset, y + yOffset, z + zOffset)
+                if neighbouringTile and neighbouringTile.walkable:
+                    neighbouringTiles.append(neighbouringTile)
+                    break
+
+        return neighbouringTiles
+
+    
+
+def MakeTileWalkable(sprite):
     return(Tile(sprite))
 
-def makeTileUnWalkable(sprite):
+def MakeTileUnWalkable(sprite):
     return(Tile(sprite, False))
 
