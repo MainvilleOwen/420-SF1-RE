@@ -81,6 +81,31 @@ class Tile:
 
         return adjacentTiles
     
+# Function that returns any tile within reach of the tile it is called on
+# It takes in an int telling it how far in any direction to reach, each +1 is one more tile checked
+# Takes in tilemap too since tiles dont store the tileMap they are from.
+    def GetTilesInReach(self, tileMap:list, reach:int):
+# Add self as the first element of the dictionary with a value of None because it didnt 
+        tilePathOrder = {self: None}
+        queue = [self]
+
+        if reach < 1: return tilePathOrder
+
+        for i in range(reach):
+            nextQueue = []
+
+            for referenceTile in queue:
+                for adjacentTile in referenceTile.GetAdjacentTiles(tileMap):
+                    if adjacentTile in tilePathOrder: continue
+
+                    nextQueue.append(adjacentTile)
+                    tilePathOrder[adjacentTile] = referenceTile
+
+            queue = nextQueue
+
+        return(tilePathOrder)
+        
+    
 
 def MakeTileWalkable(sprite):
     return(Tile(sprite))

@@ -32,6 +32,7 @@ TM.CreateTileMaps()
 running = True
 
 currentSelectedTile = None
+currentHighlightedTiles = {}
 
 currentTileMap = TM.tileMap1
 TM.SetTileMapInfo(TM.tileMap1)
@@ -88,8 +89,9 @@ while running:
             diffX = mouseX - (fromXToIsoX(tileX, tileY) + 32)
             diffY = mouseY - (fromYToIsoY(tileX, tileY, tileZ) + 16 + 10)
 
-            if tile and tile != currentSelectedTile and (abs(diffX)/32 + abs(diffY)/16) <= 1:
+            if tile and (abs(diffX)/32 + abs(diffY)/16) <= 1:
                 currentSelectedTile = tile
+                currentHighlightedTiles = currentSelectedTile.GetTilesInReach(currentTileMap, reach=2)
 
 # Draws every tile in order of rendering
     for (tileX, tileY, tileZ) in tilesToDraw:
@@ -97,6 +99,8 @@ while running:
         if not tile:
             continue
         elif currentSelectedTile and tile == currentSelectedTile:
+            tile.BlitWhileSelected(S.screen, fromXToIsoX(tileX, tileY), fromYToIsoY(tileX, tileY, tileZ))
+        elif currentHighlightedTiles and tile in currentHighlightedTiles.keys():
             tile.BlitWhileSelected(S.screen, fromXToIsoX(tileX, tileY), fromYToIsoY(tileX, tileY, tileZ))
         else:
             tile.Blit(S.screen, fromXToIsoX(tileX, tileY), fromYToIsoY(tileX, tileY, tileZ))
@@ -179,6 +183,8 @@ while running:
 
 # Uploads everything drawn to the screen basically
     pygame.display.flip()
+    currentSelectedTile = None
+    currentHighlightedTiles = None
 
 # Stores the time between the current frame and the last frame, which is the time between the last time this was called in the last loop run and this time, updates every frame.
     deltaTime = clock.tick(60) / 1000
