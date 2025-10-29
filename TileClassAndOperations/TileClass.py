@@ -43,9 +43,6 @@ class Tile:
         if self.terrain:
             screen.blit(self.terrain, (x, y + heightChangeFactor))
 
-        if self.unit:
-                self.unit.Blit(screen, x + (self.sprite.get_width())//4, y + heightChangeFactor)
-
 
     def Blit(self, screen:pygame.Surface, x:int, y:int):
         screen.blit(self.sprite, (x, y))
