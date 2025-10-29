@@ -2,25 +2,25 @@ import TileClassAndOperations.TileClass as T
 import SpriteInfo as SI
 
 def FG():
-    return(T.makeTileWalkable(SI.FullGrassTile))
+    return(T.MakeTileWalkable(SI.FullGrassTile))
 
 def FN():
-    return(T.makeTileUnWalkable(SI.FullGrassTile))
+    return(T.MakeTileUnWalkable(SI.FullGrassTile))
 
 def RG():
-    return(T.makeTileWalkable(SI.RockGrassTile))
+    return(T.MakeTileWalkable(SI.RockGrassTile))
 
 def RN():
-    return(T.makeTileUnWalkable(SI.RockGrassTile))
+    return(T.MakeTileUnWalkable(SI.RockGrassTile))
 
 def Wr():
-    return(T.makeTileUnWalkable(SI.WaterTile))
+    return(T.MakeTileUnWalkable(SI.WaterTile))
 
 def DS():
-    return(T.makeTileWalkable(SI.DesertSandTile))
+    return(T.MakeTileWalkable(SI.DesertSandTile))
 
 def DN():
-    return(T.makeTileUnWalkable(SI.DesertSandTile))
+    return(T.MakeTileUnWalkable(SI.DesertSandTile))
 
 def CreateTileMaps():
 # These are the tilemaps. They are nested lists that act as 2d matrices.
@@ -70,6 +70,7 @@ def CreateTileMaps():
                   [None, None, None, None, None, None, None, None, None, None, None, None, None, None],
                   [None, None, None, None, None, None, None, None, None, None, None, None, None, None],
                   [None, None, None, None, None, None, None, None, None, None, None, None, None, None]]]
+
 
 # This is the order of the tilemaps from bottom to top. This list is used to know what order to draw them in
 def SetTileMapInfo(tileMap):

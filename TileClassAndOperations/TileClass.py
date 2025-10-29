@@ -37,7 +37,7 @@ class Tile:
                 screen.blit(self.terrain, (x, y + heightChangeFactor))
 
 
-    def Blit(self, screen:pygame.Surface, x:int, y:int, selected:bool=False, selectable:bool=False):
+    def Blit(self, screen:pygame.Surface, x:int, y:int):
         screen.blit(self.sprite, (x, y))
 
         if self.terrain:
@@ -48,7 +48,7 @@ class Tile:
 
 # Function that checks if the tile has a unit or a piece of terrain on it
     def TileOccupied(self):
-        return True if (self.unit or self.terrain) else False
+        return (self.unit or self.terrain)
     
 # Function that assigns a unit onto a tile
     def OccupyTile(self, unit:object):
@@ -80,7 +80,6 @@ class Tile:
                     break
 
         return adjacentTiles
-
     
 
 def MakeTileWalkable(sprite):
