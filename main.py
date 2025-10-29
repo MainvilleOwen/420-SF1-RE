@@ -32,7 +32,9 @@ TM.CreateTileMaps()
 running = True
 
 currentSelectedTile = None
-currentHighlightedTiles = {}
+
+currentRedTiles = []
+currentWhiteTiles = []
 
 currentTileMap = TM.tileMap1
 TM.SetTileMapInfo(TM.tileMap1)
@@ -91,17 +93,24 @@ while running:
 
             if tile and (abs(diffX)/32 + abs(diffY)/16) <= 1:
                 currentSelectedTile = tile
-                currentHighlightedTiles = currentSelectedTile.GetTilesInReach(currentTileMap, reach=2)
+
+                if currentSelectedTile.TileOccupied():
+                    currentRedTiles = currentSelectedTile.GetTilesInReach(currentTileMap, currentSelectedTile.unit.reach)
 
 # Draws every tile in order of rendering
     for (tileX, tileY, tileZ) in tilesToDraw:
         tile = currentTileMap[tileZ][tileY][tileX]
         if not tile:
             continue
+        elif currentWhiteTiles and tile in currentWhiteTiles:
+            tile.BlitWhite(S.screen, fromXToIsoX(tileX, tileY), fromYToIsoY(tileX, tileY, tileZ))
+
+        elif currentRedTiles and tile in currentRedTiles:
+            tile.BlitRed(S.screen, fromXToIsoX(tileX, tileY), fromYToIsoY(tileX, tileY, tileZ))
+        
         elif currentSelectedTile and tile == currentSelectedTile:
-            tile.BlitWhileSelected(S.screen, fromXToIsoX(tileX, tileY), fromYToIsoY(tileX, tileY, tileZ))
-        elif currentHighlightedTiles and tile in currentHighlightedTiles.keys():
-            tile.BlitWhileSelected(S.screen, fromXToIsoX(tileX, tileY), fromYToIsoY(tileX, tileY, tileZ))
+            tile.BlitWhite(S.screen, fromXToIsoX(tileX, tileY), fromYToIsoY(tileX, tileY, tileZ))
+
         else:
             tile.Blit(S.screen, fromXToIsoX(tileX, tileY), fromYToIsoY(tileX, tileY, tileZ))
 
@@ -128,14 +137,14 @@ while running:
                 if (event.button == 1):
                     if currentSelectedTile and currentSelectedTile.walkable:
                         if not currentSelectedTile.TileOccupied():
-                            currentSelectedTile.OccupyTile(PC.PlayerCharacterUnit(name="Knight", spritesheet=SI.AllyKnightStanding, sprite=SI.AllyKnightStanding, reach=1, power=1, critChance=1, critDamage=1, health=1, speed=1, defense=1))
+                            currentSelectedTile.OccupyTile(PC.PlayerCharacterUnit(name="Knight", spritesheet=SI.AllyKnightStanding, sprite=SI.AllyKnightStanding, reach=3, power=1, critChance=1, critDamage=1, health=1, speed=1, defense=1))
                         else:
                             currentSelectedTile.unit.FaceLeft()
                             currentSelectedTile.unit.FaceRight()
                 elif (event.button == 3):
                     if currentSelectedTile and currentSelectedTile.walkable:
                         if not currentSelectedTile.TileOccupied():
-                            currentSelectedTile.OccupyTile(EC.EnemyCharacterUnit(name="Enemy", spritesheet=SI.EnemyKnightStanding, sprite=SI.EnemyKnightStanding, reach=1, power=1, critChance=1, critDamage=1, health=1, speed=1, defense=1))
+                            currentSelectedTile.OccupyTile(EC.EnemyCharacterUnit(name="Enemy", spritesheet=SI.EnemyKnightStanding, sprite=SI.EnemyKnightStanding, reach=2, power=1, critChance=1, critDamage=1, health=1, speed=1, defense=1))
                         else:
                             currentSelectedTile.unit.FaceLeft()
                             currentSelectedTile.unit.FaceRight()
@@ -177,14 +186,12 @@ while running:
                     TR.liftTilesOffScreen(clock, tilesToDraw, currentTileMap, fromXToIsoX,  fromYToIsoY)
                     running = False
 
-                    currentSelectedTile = None
-                    paused = not paused
-
 
 # Uploads everything drawn to the screen basically
     pygame.display.flip()
     currentSelectedTile = None
-    currentHighlightedTiles = None
+    currentWhiteTiles = None
+    currentRedTiles = None
 
 # Stores the time between the current frame and the last frame, which is the time between the last time this was called in the last loop run and this time, updates every frame.
     deltaTime = clock.tick(60) / 1000

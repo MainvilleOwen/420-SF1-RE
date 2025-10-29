@@ -20,7 +20,7 @@ class Tile:
 
         self.x, self.y, self.z = None, None, None
 
-    def BlitWhileSelected(self, screen:pygame.Surface, x:int, y:int):
+    def BlitWhite(self, screen:pygame.Surface, x:int, y:int):
         heightChangeFactor = -2
 
         if self.walkable:
@@ -35,6 +35,16 @@ class Tile:
 
             if self.terrain:
                 screen.blit(self.terrain, (x, y + heightChangeFactor))
+
+    def BlitRed(self, screen:pygame.Surface, x:int, y:int):
+        heightChangeFactor = 0
+        screen.blit(SI.tileUnselectableConversion[self.sprite], (x, y + heightChangeFactor))
+
+        if self.terrain:
+            screen.blit(self.terrain, (x, y + heightChangeFactor))
+
+        if self.unit:
+                self.unit.Blit(screen, x + (self.sprite.get_width())//4, y + heightChangeFactor)
 
 
     def Blit(self, screen:pygame.Surface, x:int, y:int):
@@ -96,7 +106,7 @@ class Tile:
 
             for referenceTile in queue:
                 for adjacentTile in referenceTile.GetAdjacentTiles(tileMap):
-                    if adjacentTile in tilePathOrder: continue
+                    if adjacentTile in tilePathOrder.keys(): continue
 
                     nextQueue.append(adjacentTile)
                     tilePathOrder[adjacentTile] = referenceTile
