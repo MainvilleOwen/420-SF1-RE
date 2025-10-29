@@ -9,7 +9,7 @@ import TileClassAndOperations.TileMaps as TM
 from UnitTypes import PlayerCharacterUnitClass as PC
 from UnitTypes import EnemyCharacterUnitClass as EC
 
-import TileClassAndOperations.TIleOperations as TO
+import TileClassAndOperations.TileOperations as TO
 import TileClassAndOperations.TileTransitions as TR
 
 import BackgroundClass as B

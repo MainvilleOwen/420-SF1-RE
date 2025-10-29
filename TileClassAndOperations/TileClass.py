@@ -2,7 +2,7 @@ import pygame
 import SpriteInfo as SI
 import Screen as S
 
-from TIleOperations import SafelyGetTile
+from TileClassAndOperations.TileOperations import SafelyGetTile
 
 # Each Tile in the tilemap is its own object
 class Tile:
