@@ -4,7 +4,7 @@ import random
 from TileClassAndOperations.TileClass import Tile
 
 class Unit:
-    def __init__(self, name:str, spritesheet:pygame.surface, sprite:pygame.surface, reach:int, power:int, critChance:int, critDamage:int, isAlive=True):
+    def __init__(self, name:str, spritesheet:pygame.surface, sprite:pygame.surface, reach:int, power:int, critChance:int, critDamage:int, team:int):
 # Name that will be shown when Unit is selected
         self.name = name
 
@@ -29,15 +29,23 @@ class Unit:
 # How much extra damage the unit will deal if they
         self.critDamage = critDamage
 
-# If the unit still has health left
-        self.isAlive = isAlive
+# The team of the unit. 0 for player, 1 for enemyTeam1, etc.
+        self.team = team
+
+
 
         self.tile = None
+
 
     def Act(self):
         pass
 
-    def DealDamage(self, target:object):
+    def Attack(self, target):
+        chance = random.randint(1, 100)
+        if chance > target.defense:
+            pass
+
+    def DealDamageTo(self, target:object):
         chance = random.randint(1,100)
 
         totalDamage = self.power

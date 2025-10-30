@@ -96,6 +96,9 @@ while running:
 
                 if currentSelectedTile.TileOccupied():
                     currentRedTiles = currentSelectedTile.GetTilesInReach(currentTileMap, currentSelectedTile.unit.reach)
+                else:
+                    currentWhiteTiles = None
+                    currentRedTiles = None
 
 # Draws every tile in order of rendering
     for (tileX, tileY, tileZ) in tilesToDraw:
@@ -105,7 +108,7 @@ while running:
         elif currentWhiteTiles and tile in currentWhiteTiles:
             tile.BlitWhite(S.screen, fromXToIsoX(tileX, tileY), fromYToIsoY(tileX, tileY, tileZ))
 
-        elif currentRedTiles and tile in currentRedTiles:
+        elif currentRedTiles and tile is not currentSelectedTile and tile in currentRedTiles:
             tile.BlitRed(S.screen, fromXToIsoX(tileX, tileY), fromYToIsoY(tileX, tileY, tileZ))
         
         elif currentSelectedTile and tile == currentSelectedTile:
@@ -137,14 +140,14 @@ while running:
                 if (event.button == 1):
                     if currentSelectedTile and currentSelectedTile.walkable:
                         if not currentSelectedTile.TileOccupied():
-                            currentSelectedTile.OccupyTile(PC.PlayerCharacterUnit(name="Knight", spritesheet=SI.AllyKnightStanding, sprite=SI.AllyKnightStanding, reach=3, power=1, critChance=1, critDamage=1, health=1, speed=1, defense=1))
+                            currentSelectedTile.OccupyTile(PC.PlayerCharacterUnit(name="Knight", spritesheet=SI.AllyKnightStanding, sprite=SI.AllyKnightStanding, reach=2, power=1, critChance=1, critDamage=1, health=1, speed=1, defense=1, team=0))
                         else:
                             currentSelectedTile.unit.FaceLeft()
                             currentSelectedTile.unit.FaceRight()
                 elif (event.button == 3):
                     if currentSelectedTile and currentSelectedTile.walkable:
                         if not currentSelectedTile.TileOccupied():
-                            currentSelectedTile.OccupyTile(EC.EnemyCharacterUnit(name="Enemy", spritesheet=SI.EnemyKnightStanding, sprite=SI.EnemyKnightStanding, reach=2, power=1, critChance=1, critDamage=1, health=1, speed=1, defense=1))
+                            currentSelectedTile.OccupyTile(EC.EnemyCharacterUnit(name="Enemy", spritesheet=SI.EnemyKnightStanding, sprite=SI.EnemyKnightStanding, reach=1, power=1, critChance=1, critDamage=1, health=1, speed=1, defense=1, team=1))
                         else:
                             currentSelectedTile.unit.FaceLeft()
                             currentSelectedTile.unit.FaceRight()
@@ -189,9 +192,6 @@ while running:
 
 # Uploads everything drawn to the screen basically
     pygame.display.flip()
-    currentSelectedTile = None
-    currentWhiteTiles = None
-    currentRedTiles = None
 
 # Stores the time between the current frame and the last frame, which is the time between the last time this was called in the last loop run and this time, updates every frame.
     deltaTime = clock.tick(60) / 1000
