@@ -1,8 +1,7 @@
 import pygame
 import SpriteInfo as SI
-import Screen as S
-
-from TileClassAndOperations.TileOperations import SafelyGetTile
+import ScreenAndClock as S
+import TileClassAndOperations.TileMapClass as TC
 
 # Each Tile in the tilemap is its own object
 class Tile:
@@ -19,6 +18,7 @@ class Tile:
         self.unit = None
 
         self.x, self.y, self.z = None, None, None
+    
 
     def BlitWhite(self, screen:pygame.Surface, x:int, y:int):
         heightChangeFactor = -2
@@ -73,6 +73,7 @@ class Tile:
             self.unit.tile = None
             self.unit = None
 
+# Function that returns the Adjacent Tiles of the tile object it is called on.
     def GetAdjacentTiles(self, tileMap):
         adjacentTiles = []
 
@@ -82,9 +83,9 @@ class Tile:
         zOffsets = [1, 0, -1]
 
         for xOffset, yOffset in xAndYOffsets:
-
             for zOffset in zOffsets:
-                adjacentTile = SafelyGetTile(tileMap, x + xOffset, y + yOffset, z + zOffset)
+
+                adjacentTile = tileMap.SafelyGetTile( x + xOffset, y + yOffset, z + zOffset)
                 if adjacentTile and adjacentTile.walkable:
                     adjacentTiles.append(adjacentTile)
                     break
@@ -95,22 +96,34 @@ class Tile:
 # It takes in an int telling it how far in any direction to reach, each +1 is one more tile checked
 # Takes in tilemap too since tiles dont store the tileMap they are from.
     def GetTilesInReach(self, tileMap:list, reach:int):
-# Add self as the first element of the dictionary with a value of None because it didnt 
-        tilePathOrder = {self: None}
-        queue = [self]
 
+# Add self as the first element of the dictionary with a value of None because it doesnt come from another tile. Then adds it to the queue of tiles to be checked by the GetAdjacentTiles Function
+        tilePathOrder = {self: None}
+# If the reach is less than 1, we just return this dictionary as is. No other tile can be reached.
         if reach < 1: return tilePathOrder
 
+# If the program continues, we add self to the queue to check the adjacent tiles here first.
+        queue = [self]
+
+# The for i in range(reach) makes the loop iterate through itself once for every tile that can be reached out to.
         for i in range(reach):
+        
+# The queue of tiles that will be checked next. These are added to the queue after it is cleared.
             nextQueue = []
 
+# Runs once for every tile in the queue, giving each one the name referenceTile as they will be the reference to the next ones in the dictionary
             for referenceTile in queue:
+#For each adjacent tile to the reference
                 for adjacentTile in referenceTile.GetAdjacentTiles(tileMap):
+
+# If the tile has already been checked, previously this step or earlier in another step, we just move on
                     if adjacentTile in tilePathOrder.keys(): continue
 
+# We add the tiles to the nextQueue, and then add it to the returned dictionary with a reference to the tile it was obtained from. This allows for the tracing of the path to get to this tile
                     nextQueue.append(adjacentTile)
                     tilePathOrder[adjacentTile] = referenceTile
 
+# Make the next tiles to check the queue for the next iteration of the loop
             queue = nextQueue
 
         return(tilePathOrder)
