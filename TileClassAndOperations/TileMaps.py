@@ -42,7 +42,7 @@ def CreateTileMaps():
                                 [None, None, None, None, None, None, None, None, None, None, None, None, None, None],
                                 [None, None, None, None, None, None, None, None, None, None, None, None, None, None]],
 
-                                [[None, None, None, None, None, None, None, None, None, None, None, None, None, None],
+                               [[None, None, None, None, None, None, None, None, None, None, None, None, None, None],
                                 [None, None, None, None, None, None, None, None, None, None, None, None, None, None],
                                 [None, None, None, RG(), RG(), None, None, None, None, None, None, DS(), None, None],
                                 [None, RG(), FG(), None, None, None, None, None, None, None, None, None, DS(), None],
@@ -57,7 +57,7 @@ def CreateTileMaps():
                                 [None, None, None, None, None, None, None, None, None, None, None, None, None, None],
                                 [None, None, None, None, None, None, None, None, None, None, None, None, None, None]],
                         
-                                [[None, None, None, None, None, None, None, None, None, None, None, None, None, None],
+                               [[None, None, None, None, None, None, None, None, None, None, None, None, None, None],
                                 [None, None, None, None, None, None, None, None, None, None, None, None, None, None],
                                 [None, None, None, None, None, None, None, None, None, None, None, None, DS(), None],
                                 [None, None, None, None, None, None, None, None, None, None, None, None, None, DS()],
