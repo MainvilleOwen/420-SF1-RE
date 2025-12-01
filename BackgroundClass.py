@@ -4,7 +4,7 @@ import SpriteInfo as SI
 import ScreenAndClock as S
 
 class BackgroundClass:
-    def __init__(self, sprite):
+    def __init__(self, sprite:pygame.Surface):
         self.sprite = sprite
 
     def ResizeBackground(self):
@@ -17,6 +17,6 @@ class BackgroundClass:
     def ChangeBackground(self, sprite:pygame.Surface):
         self.sprite = sprite
 
-def CreateBackground(sprite):
+def CreateBackground(sprite:pygame.Surface):
     global Background
     Background = BackgroundClass(sprite)

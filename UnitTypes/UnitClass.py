@@ -4,7 +4,7 @@ import random
 from TileClassAndOperations.TileClass import Tile
 
 class Unit:
-    def __init__(self, name:str, spritesheet:pygame.surface, sprite:pygame.surface, reach:int, power:int, critChance:int, critDamage:int, team:int):
+    def __init__(self, name:str, spritesheet:pygame.Surface, sprite:pygame.Surface, reach:int, power:int, critChance:int, critDamage:int, team:int):
 # Name that will be shown when Unit is selected
         self.name = name
 

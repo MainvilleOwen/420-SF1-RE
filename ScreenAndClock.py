@@ -1,5 +1,4 @@
 import pygame
-import random
 
 def InitializeScreenAndClock():
     pygame.init()

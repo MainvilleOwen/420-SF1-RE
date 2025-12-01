@@ -1,7 +1,5 @@
 import pygame
 import SpriteInfo as SI
-import ScreenAndClock as S
-import TileClassAndOperations.TileMapClass as TC
 
 # Each Tile in the tilemap is its own object
 class Tile:
@@ -74,7 +72,7 @@ class Tile:
             self.unit = None
 
 # Function that returns the Adjacent Tiles of the tile object it is called on.
-    def GetAdjacentTiles(self, tileMap):
+    def GetAdjacentTiles(self, tileMap:object):
         adjacentTiles = []
 
         x, y, z = self.x, self.y, self.z
@@ -95,7 +93,7 @@ class Tile:
 # Function that returns any tile within reach of the tile it is called on
 # It takes in an int telling it how far in any direction to reach, each +1 is one more tile checked
 # Takes in tilemap too since tiles dont store the tileMap they are from.
-    def GetTilesInReach(self, tileMap:list, reach:int):
+    def GetTilesInReach(self, tileMap:object, reach:int):
 
 # Add self as the first element of the dictionary with a value of None because it doesnt come from another tile. Then adds it to the queue of tiles to be checked by the GetAdjacentTiles Function
         tilePathOrder = {self: None}
@@ -130,9 +128,9 @@ class Tile:
         
     
 
-def MakeTileWalkable(sprite):
+def MakeTileWalkable(sprite:pygame.Surface):
     return(Tile(sprite))
 
-def MakeTileUnWalkable(sprite):
+def MakeTileUnWalkable(sprite:pygame.Surface):
     return(Tile(sprite, False))
 

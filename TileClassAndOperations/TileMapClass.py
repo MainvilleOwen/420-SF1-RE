@@ -5,10 +5,10 @@ import BackgroundClass as B
 
 
 # Smoothstep and Clamp live here as they are used at the tilemap level, but don't need to be inside the classS
-def clampFunc(val, a=0, b=1):
+def clampFunc(val:float, a=0, b=1):
     return max(a, min(b, val))
 
-def smoothStepFunc(val):
+def smoothStepFunc(val:float):
     clampedVal = clampFunc(val)
     return ((clampedVal**2) * (3 - 2*clampedVal))
 
@@ -53,7 +53,7 @@ class TileMap:
         self.yAxisOffset = (SaC.screenHeight//2 - (SI.tileHeight/2)*(self.yLength + 1))
 
 
-    def SafelyGetTile(self, x, y, z):
+    def SafelyGetTile(self, x:int, y:int, z:int):
         if z < 0 or z > self.zMaxIndex: return None
         if y < 0 or y > self.yMaxIndex: return None
         if x < 0 or x > self.xMaxIndex: return None
@@ -281,7 +281,7 @@ class TileMap:
                     break
 
     
-    def FindHoveredTile(self, mouseX, mouseY):
+    def FindHoveredTile(self, mouseX:int, mouseY:int):
         currentSelectedTile = None
         for (x, y, z) in self.tileDrawOrder:
             tile = self.SafelyGetTile(x, y, z)
