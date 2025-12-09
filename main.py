@@ -94,10 +94,10 @@ def main():
     # New and Old tilemap are then swapped with replacement animation (In trileTransitions.py)
     # Finally Old Tilemap is replaced with new one variable wise
                     if (event.key == pygame.K_UP) and not paused:
-                        currentTileMap.RotateSelf(positive=True)
+                        currentTileMap.RotateSelf(clockwise=True)
 
                     if (event.key == pygame.K_DOWN) and not paused:
-                        currentTileMap.RotateSelf(positive=False)
+                        currentTileMap.RotateSelf(clockwise=False)
 
     # Test function that makes current TileMap equal to tileMap1
                     if (event.key == pygame.K_1) and not paused:

@@ -126,8 +126,8 @@ class TileMap:
                 tile.Blit(screen, viewX, viewY)
 
 
-    def RotateSelf(self, positive:bool):
-        if positive:
+    def RotateSelf(self, clockwise:bool):
+        if clockwise:
             rotatedTileList =  [[list(row) for row in zip(*layer[::-1])] for layer in self.tileList]
             rotatedTileMap = TileMap(rotatedTileList)
         else:
@@ -147,6 +147,8 @@ class TileMap:
         tileOffset = 0.02
         maxTileDelay = (self.xMaxIndex + self.yMaxIndex) * tileOffset
 
+        unitsAlreadyRotated = set()
+
         while running:
             B.Background.ClearScreen()
 
@@ -156,40 +158,46 @@ class TileMap:
             for (x, y, z) in self.tileDrawOrder:
                 tile = self.SafelyGetTile(x, y, z)
 
-                if positive: tileDepth = (x + y)
+                if clockwise: tileDepth = (x + y)
                 else: tileDepth = (self.xMaxIndex - x) + (self.yMaxIndex - y)
                 
                 tileDelay = tileDepth * tileOffset
 
                 tileProgress = clampFunc(progress - tileDelay)
 
-                if positive: lift = -maxLift * smoothStepFunc(tileProgress)
+                if clockwise: lift = -maxLift * smoothStepFunc(tileProgress)
                 else: lift = maxLift * smoothStepFunc(tileProgress)
 
                 tile.Blit(SaC.screen, self.WorldToViewX(x, y), self.WorldToViewY(x, y, z) + lift)
 
 
+                if tile.unit and (progress >= 0.5 + tileDelay) and not (tile.unit in unitsAlreadyRotated):
+                    tile.unit.Rotate(clockwise=clockwise)
+                    unitsAlreadyRotated.add(tile.unit)
+
+
+
             for (x, y, z) in rotatedTileMap.tileDrawOrder:
                 tile = rotatedTileMap.SafelyGetTile(x, y, z)
 
-                if positive: tileDepth = (x + y)
+                if clockwise: tileDepth = (x + y)
                 else: tileDepth = (self.xMaxIndex - x) + (self.yMaxIndex - y)
 
                 tileDelay = tileDepth * tileOffset
                     
                 tileProgress = clampFunc(progress - tileDelay)
 
-                if positive:
+                if clockwise:
                     lift = -maxLift * smoothStepFunc(tileProgress)
                 else:
                     lift = maxLift * smoothStepFunc(tileProgress)
 
-                tile.Blit(SaC.screen, rotatedTileMap.WorldToViewX(x, y), rotatedTileMap.WorldToViewY(x, y, z) + (maxLift if positive else -maxLift) + lift)
+                tile.Blit(SaC.screen, rotatedTileMap.WorldToViewX(x, y), rotatedTileMap.WorldToViewY(x, y, z) + (maxLift if clockwise else -maxLift) + lift)
 
             pygame.display.flip()
             SaC.deltaTime = SaC.clock.tick(60)/1000
 
-            if transitionTime <= 0.4:
+            if transitionTime >= 0.4:
                 pygame.event.clear()
 
             if progress >= 1.0 + maxTileDelay:

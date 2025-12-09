@@ -1,6 +1,7 @@
 import pygame
 import random
 
+
 from TileClassAndOperations.TileClass import Tile
 
 class Unit:
@@ -31,8 +32,6 @@ class Unit:
 
 # The team of the unit. 0 for player, 1 for enemyTeam1, etc.
         self.team = team
-
-
 
         self.tile = None
 
@@ -69,9 +68,38 @@ class Unit:
     def FaceRight(self):
         if self.facingLeft:
             self.sprite = pygame.transform.flip(self.sprite, True, False)
-            return True
-        return False
+            return False
+        return True
     
     def FaceFront(self):
         if not self.facingFront:
-            pass
+            # Add switching of back sprite to front sprite
+            return True
+        return False
+    
+    def FaceBack(self):
+        if self.facingFront:
+            # Add switching of front sprite to back sprite
+            return False
+        return True
+
+    def Rotate(self, clockwise:bool):
+        if clockwise:
+            if self.facingLeft:
+                if self.facingFront: self.facingFront = self.FaceBack()
+                else: self.facingLeft = self.FaceRight()
+
+            else:
+                if self.facingFront: self.facingLeft = self.FaceLeft()
+                else: self.facingFront = self.FaceFront()
+
+        elif not clockwise:
+            if self.facingLeft:
+                if self.facingFront: self.facingLeft = self.FaceRight()
+                else: self.facingFront = self.FaceFront()
+
+            else:
+                if self.facingFront: self.facingLeft = self.FaceLeft()
+                else: self.facingFront = self.FaceBack()
+
+        
