@@ -14,19 +14,26 @@ class Tile:
 
 # If the tile currently has a unit on it, the object of that unit will be stored here
         self.unit = None
+        self.displayUnit = None
 
+# x, y, z position of tile (THESE ARE INDEX COORDINATES)
         self.x, self.y, self.z = None, None, None
     
 
-    def BlitWhite(self, screen:pygame.Surface, x:int, y:int):
+    def BlitWhite(self, screen:pygame.Surface, x:int, y:int, WTVX=None, WTVY=None):
         heightChangeFactor = -2
 
         if self.walkable:
 
             screen.blit(SI.tileSelectedConversion[self.sprite], (x, y + heightChangeFactor))
 
-            if self.unit:
-                self.unit.Blit(screen, x + (self.sprite.get_width())//4, y + heightChangeFactor)
+            if self.displayUnit and self.displayUnit.displayTile == self:
+                if WTVX and WTVY:
+                    unitTileX, unitTileY = WTVX(self.displayUnit.tile.x, self.displayUnit.tile.y), WTVY(self.displayUnit.tile.x, self.displayUnit.tile.y, self.displayUnit.tile.z)
+                else:
+                    unitTileX, unitTileY = x, y
+                
+                self.displayUnit.Blit(screen, unitTileX + (self.sprite.get_width())//4, unitTileY)
 
         else:
             screen.blit(SI.tileUnselectableConversion[self.sprite], (x, y + heightChangeFactor))
@@ -34,42 +41,75 @@ class Tile:
             if self.terrain:
                 screen.blit(self.terrain, (x, y + heightChangeFactor))
 
-    def BlitRed(self, screen:pygame.Surface, x:int, y:int):
+    def BlitRed(self, screen:pygame.Surface, x:int, y:int, WTVX=None, WTVY=None):
         heightChangeFactor = 0
         screen.blit(SI.tileUnselectableConversion[self.sprite], (x, y + heightChangeFactor))
 
         if self.terrain:
             screen.blit(self.terrain, (x, y + heightChangeFactor))
 
-        if self.unit:
-            self.unit.Blit(screen, x + (self.sprite.get_width())//4, y + heightChangeFactor)
+        if self.displayUnit and self.displayUnit.displayTile == self:
+            if WTVX and WTVY:
+                unitTileX, unitTileY = WTVX(self.displayUnit.tile.x, self.displayUnit.tile.y), WTVY(self.displayUnit.tile.x, self.displayUnit.tile.y, self.displayUnit.tile.z)
+            else:
+                unitTileX, unitTileY = x, y
+                
+            self.displayUnit.Blit(screen, unitTileX + (self.sprite.get_width())//4, unitTileY)
 
 
-    def Blit(self, screen:pygame.Surface, x:int, y:int):
+    def Blit(self, screen:pygame.Surface, x:int, y:int, WTVX=None, WTVY=None):
         screen.blit(self.sprite, (x, y))
 
         if self.terrain:
             screen.blit(self.terrain, (x, y))
 
-        if self.unit:
-            self.unit.Blit(screen, x + (self.sprite.get_width())//4, y)
+        if self.displayUnit and self.displayUnit.displayTile == self:
+            if WTVX and WTVY:
+                unitTileX, unitTileY = WTVX(self.displayUnit.tile.x, self.displayUnit.tile.y), WTVY(self.displayUnit.tile.x, self.displayUnit.tile.y, self.displayUnit.tile.z)
+            else:
+                unitTileX, unitTileY = x, y
+
+            self.displayUnit.Blit(screen, unitTileX + (self.sprite.get_width())//4, unitTileY)
 
 # Function that checks if the tile has a unit or a piece of terrain on it
     def TileOccupied(self):
         return (self.unit or self.terrain)
     
-# Function that assigns a unit onto a tile
+# Function that assigns a unit to a tile (LOGIC WISE AND VISUAL WISE)
     def OccupyTile(self, unit:object):
         if self.TileOccupied() or not self.walkable:
             return False
+        
         self.unit = unit
+        self.displayUnit = unit
+
         unit.tile = self
+        unit.displayTile = self
         return True
     
     def UnOccupyTile(self):
         if self.unit:
             self.unit.tile = None
+            self.unit.displayTile = None
+
             self.unit = None
+            self.displayUnit = None
+
+    def AssignUnitVisually(self, unit:object):
+        self.displayUnit = unit
+        unit.displayTile = self
+
+    def UnAssignUnitVisually(self):
+        self.displayUnit.displayTile = None
+        self.displayUnit = None
+
+    def AssignUnitLogically(self, unit:object):
+        self.unit = unit
+        unit.tile = self
+
+    def UnAssignUnitLogically(self):
+        self.unit.tile = None
+        self.unit = None
 
 # Function that returns the Adjacent Tiles of the tile object it is called on.
     def GetAdjacentTiles(self, tileMap:object):
@@ -87,7 +127,7 @@ class Tile:
                 if adjacentTile and adjacentTile.walkable:
                     adjacentTiles.append(adjacentTile)
                     break
-
+        
         return adjacentTiles
     
 # Function that returns any tile within reach of the tile it is called on
@@ -126,7 +166,16 @@ class Tile:
 
         return(tilePathOrder)
         
-    
+    def ReconstructPath(self, tileParents:dict):
+        path = []
+        targetTile = self
+        
+        while targetTile in tileParents and tileParents[targetTile]:
+            path.append(targetTile)
+            targetTile = tileParents[targetTile]
+
+        path.reverse() # So we can go from start to target instead of going backwards. Looping over the tiles is now way easier because it goes forwards
+        return path
 
 def MakeTileWalkable(sprite:pygame.Surface):
     return(Tile(sprite))

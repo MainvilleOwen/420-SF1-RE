@@ -45,6 +45,10 @@ def main():
         if not tileMapLoaded:
 
             currentTileMap.LiftTilesOntoScreen()
+
+            Knight1 = PC.PlayerCharacterUnit(name="Knight", spritesheet=SI.AllyKnightStanding, sprite=SI.AllyKnightStanding, reach=2, power=1, critChance=1, critDamage=1, health=1, speed=1, defense=1)
+            currentTileMap.SafelyGetTile(11, 9, 0).OccupyTile(Knight1)
+
             tileMapLoaded = True
 
             pygame.event.clear()
@@ -57,7 +61,9 @@ def main():
         if not paused:
             hoveredTile = currentTileMap.FindHoveredTile(mouseX, mouseY)
 
+
     # Draws every tile in order of rendering
+        Knight1.UpdateRelativePosition(SaC.deltatime, currentTileMap)
         currentTileMap.Blit()
 
 
@@ -74,17 +80,18 @@ def main():
                     if (event.button == 1):
                         if currentTileMap and hoveredTile and hoveredTile.walkable:
                             if not hoveredTile.TileOccupied():
-                                hoveredTile.OccupyTile(PC.PlayerCharacterUnit(name="Knight", spritesheet=SI.AllyKnightStanding, sprite=SI.AllyKnightStanding, reach=2, power=1, critChance=1, critDamage=1, health=1, speed=1, defense=1, team=0))
+                                Knight1.SetPath(hoveredTile.ReconstructPath(Knight1.tile.GetTilesInReach(currentTileMap, 5)))
+                                """hoveredTile.OccupyTile(PC.PlayerCharacterUnit(name="Knight", spritesheet=SI.AllyKnightStanding, sprite=SI.AllyKnightStanding, reach=2, power=1, critChance=1, critDamage=1, health=1, speed=1, defense=1))
                             else:
                                 hoveredTile.unit.FaceLeft()
-                                hoveredTile.unit.FaceRight()
+                                hoveredTile.unit.FaceRight()"""
                     elif (event.button == 3):
                         if hoveredTile and hoveredTile.walkable:
                             if not hoveredTile.TileOccupied():
-                                hoveredTile.OccupyTile(EC.EnemyCharacterUnit(name="Enemy", spritesheet=SI.EnemyKnightStanding, sprite=SI.EnemyKnightStanding, reach=1, power=1, critChance=1, critDamage=1, health=1, speed=1, defense=1, team=1))
+                                """hoveredTile.OccupyTile(EC.EnemyCharacterUnit(name="Enemy", spritesheet=SI.EnemyKnightStanding, sprite=SI.EnemyKnightStanding, reach=1, power=1, critChance=1, critDamage=1, health=1, speed=1, defense=1))
                             else:
                                 hoveredTile.unit.FaceLeft()
-                                hoveredTile.unit.FaceRight()
+                                hoveredTile.unit.FaceRight()"""
 
 
     # ALL MOUSE PRESSING EVENTS

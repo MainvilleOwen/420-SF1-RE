@@ -119,11 +119,11 @@ class TileMap:
             viewY = self.WorldToViewY(x, y, z)
 # This skips over any items in the tileMap that are empty or "None"
             if tile in self.Whites:
-                tile.BlitWhite(screen, viewX, viewY)
+                tile.BlitWhite(screen, viewX, viewY, self.WorldToViewX, self.WorldToViewY)
             elif tile in self.Reds:
-                tile.BlitRed(screen, viewX, viewY)
+                tile.BlitRed(screen, viewX, viewY, self.WorldToViewX, self.WorldToViewY)
             else:
-                tile.Blit(screen, viewX, viewY)
+                tile.Blit(screen, viewX, viewY, self.WorldToViewX, self.WorldToViewY)
 
 
     def RotateSelf(self, clockwise:bool):

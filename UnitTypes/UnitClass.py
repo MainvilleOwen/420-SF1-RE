@@ -34,6 +34,7 @@ class Unit:
         self.team = team
 
         self.tile = None
+        self.displayTile = None
 
 
     def Act(self, tileMap):
