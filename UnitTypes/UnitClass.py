@@ -63,26 +63,24 @@ class Unit:
     def FaceLeft(self):
         if not self.facingLeft:
             self.sprite = pygame.transform.flip(self.sprite, True, False)
-            return True
-        return False
+        return True
     
     def FaceRight(self):
         if self.facingLeft:
             self.sprite = pygame.transform.flip(self.sprite, True, False)
-            return False
-        return True
+        return False
     
     def FaceFront(self):
         if not self.facingFront:
             # Add switching of back sprite to front sprite
             return True
-        return False
+        return True
     
     def FaceBack(self):
         if self.facingFront:
             # Add switching of front sprite to back sprite
             return False
-        return True
+        return False
 
     def Rotate(self, clockwise:bool):
         if clockwise:

@@ -98,11 +98,6 @@ class TileMap:
             totalNum += 1
         return(returnedTiles)
     
-
-# Functions that convert from coordinates inside the tilemap to screen coordinates in isometric space
-# The reason for the weird if statement instead of the simple <offset = xAxisOffset> in the function is because
-# without it formatted like this python will not take note of any changes to the xAxisOffset inside the function after computing it once.
-# This means that if the window is resized or anything the covnersion will still be centered
     def WorldToViewX(self, x:int, y:int):
         return(32*x - 32*y + self.xAxisOffset)
     

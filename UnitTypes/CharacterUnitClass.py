@@ -54,6 +54,7 @@ class CharacterUnit(Unit):
         nextTile = self.path[0]
 
         if self.displayTile != nextTile:
+                    
             if tileMap.tileDrawOrder.index((self.displayTile.x, self.displayTile.y, self.displayTile.z)) < tileMap.tileDrawOrder.index((nextTile.x, nextTile.y, nextTile.z)):
                 self.displayTile.UnAssignUnitVisually()
                 nextTile.AssignUnitVisually(self)
@@ -67,6 +68,14 @@ class CharacterUnit(Unit):
 
         xComponent = distanceX/distance
         yComponent = distanceY/distance
+        
+
+        if xComponent > 0:  self.facingLeft = self.FaceRight()
+        else:   self.facingLeft = self.FaceLeft()
+
+        if yComponent > 0:  self.facingFront = self.FaceFront()
+        else:   self.facingFront = self.FaceBack()
+
 
         self.relativeX += movedPixels * xComponent
         self.relativeY += movedPixels * yComponent
