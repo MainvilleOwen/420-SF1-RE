@@ -18,6 +18,7 @@ class Tile:
 
 # x, y, z position of tile (THESE ARE INDEX COORDINATES)
         self.x, self.y, self.z = None, None, None
+        self.yOffset = 0
     
 
     def BlitWhite(self, screen:pygame.Surface, x:int, y:int, WTVX=None, WTVY=None):
@@ -25,7 +26,7 @@ class Tile:
 
         if self.walkable:
 
-            screen.blit(SI.tileSelectedConversion[self.sprite], (x, y + heightChangeFactor))
+            screen.blit(SI.tileSelectedConversion[self.sprite], (x, y + self.yOffset + heightChangeFactor))
 
             if self.displayUnit and self.displayUnit.displayTile == self:
                 if WTVX and WTVY:
@@ -36,14 +37,14 @@ class Tile:
                 self.displayUnit.Blit(screen, unitTileX + (self.sprite.get_width())//4, unitTileY)
 
         else:
-            screen.blit(SI.tileUnselectableConversion[self.sprite], (x, y + heightChangeFactor))
+            screen.blit(SI.tileUnselectableConversion[self.sprite], (x, y + self.yOffset + heightChangeFactor))
 
             if self.terrain:
                 screen.blit(self.terrain, (x, y + heightChangeFactor))
 
     def BlitRed(self, screen:pygame.Surface, x:int, y:int, WTVX=None, WTVY=None):
         heightChangeFactor = 0
-        screen.blit(SI.tileUnselectableConversion[self.sprite], (x, y + heightChangeFactor))
+        screen.blit(SI.tileUnselectableConversion[self.sprite], (x, y + self.yOffset + heightChangeFactor))
 
         if self.terrain:
             screen.blit(self.terrain, (x, y + heightChangeFactor))
@@ -58,7 +59,7 @@ class Tile:
 
 
     def Blit(self, screen:pygame.Surface, x:int, y:int, WTVX=None, WTVY=None):
-        screen.blit(self.sprite, (x, y))
+        screen.blit(self.sprite, (x, y + self.yOffset))
 
         if self.terrain:
             screen.blit(self.terrain, (x, y))

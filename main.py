@@ -64,6 +64,7 @@ def main():
 
     # Draws every tile in order of rendering
         Knight1.UpdateRelativePosition(SaC.deltatime, currentTileMap)
+        currentTileMap.UpdateWave(SaC.deltatime)
         currentTileMap.Blit()
 
 

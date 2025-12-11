@@ -43,7 +43,7 @@ class CharacterUnit(Unit):
         # Amount of pixels moved per frame (sort of, its like directional pixels not bound by the grid if that makes sense. Distance formula)
         # Change the 4 to speed it up or slow it down
         deltaTime = 1 if deltaTime == 0 else deltaTime
-        movedPixels = 4 * deltaTime
+        movedPixels = 3 * deltaTime
 
         if not self.path or len(self.path) < 1:
             self.tile.OccupyTile(self)
@@ -68,7 +68,7 @@ class CharacterUnit(Unit):
 
         xComponent = distanceX/distance
         yComponent = distanceY/distance
-        
+
 
         if xComponent > 0:  self.facingLeft = self.FaceRight()
         else:   self.facingLeft = self.FaceLeft()

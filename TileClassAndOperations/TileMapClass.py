@@ -1,4 +1,5 @@
 import pygame
+import math
 import ScreenAndClock as SaC
 import SpriteInfo as SI
 import BackgroundClass as B
@@ -27,6 +28,10 @@ class TileMap:
 
         self.zMaxIndex, self.yMaxIndex, self.xMaxIndex = (len(tileList)-1), (len(tileList[0])-1), (len(tileList[0][0])-1)
 
+
+        self.Wave = []
+        self.waveTime = 0
+
         self.tileDrawOrder = self.GetTileDrawOrder()
 
 
@@ -47,6 +52,7 @@ class TileMap:
 
         self.zMaxIndex, self.yMaxIndex, self.xMaxIndex = (len(self.tileList)-1), (len(self.tileList[0])-1), (len(self.tileList[0][0])-1)
 
+        self.Wave = []
         self.tileDrawOrder = self.GetTileDrawOrder()
 
         self.xAxisOffset = (SaC.screenWidth//2 - SI.tileWidth/2) - (SI.tileWidth/2)*((self.widthHeightDifference - 1)/2)
@@ -85,6 +91,7 @@ class TileMap:
                     tile = self.SafelyGetTile(x, y, z)
                     if tile:
                         returnedTiles.append((x, y, z))
+                        if tile.sprite == SI.WaterTile or tile.sprite == SI.WaterTileUnselectable: self.Wave.append(tile)
                         tile.x, tile.y, tile.z = x, y, z
                     x += 1
                     y -= 1
@@ -283,6 +290,16 @@ class TileMap:
                 if progress >= 1.0 + maxTileDelay:
                     break
 
+    def UpdateWave(self, deltaTime):
+        deltaTime = 0.015 if deltaTime == 0 else deltaTime
+        self.waveTime += deltaTime
+
+        bob = 4
+        speed = 2
+
+        for tile in self.Wave:
+            phase = (tile.x + tile.y) * 0.5
+            tile.yOffset = bob * math.sin(self.waveTime * speed + phase)
     
     def FindHoveredTile(self, mouseX:int, mouseY:int):
         currentSelectedTile = None
