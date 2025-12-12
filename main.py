@@ -46,7 +46,7 @@ def main():
 
             currentTileMap.LiftTilesOntoScreen()
 
-            Knight1 = PC.PlayerCharacterUnit(name="Knight", spritesheet=SI.AllyKnightStanding, sprite=SI.AllyKnightStanding, reach=2, power=1, critChance=1, critDamage=1, health=1, speed=1, defense=1)
+            Knight1 = PC.PlayerCharacterUnit(name="Knight", spritesheet=SI.AllyKnightStanding, sprite=SI.AllyKnightStanding, reach=4, power=1, critChance=1, critDamage=1, health=1, speed=3, defense=1)
             currentTileMap.SafelyGetTile(11, 9, 0).OccupyTile(Knight1)
 
             tileMapLoaded = True
@@ -81,7 +81,7 @@ def main():
                     if (event.button == 1):
                         if currentTileMap and hoveredTile and hoveredTile.walkable:
                             if not hoveredTile.TileOccupied():
-                                Knight1.SetPath(hoveredTile.ReconstructPath(Knight1.tile.GetTilesInReach(currentTileMap, 5)))
+                                Knight1.SetPath(hoveredTile.ReconstructPath(Knight1.tile.GetTilesInReach(currentTileMap, Knight1.speed)))
                                 """hoveredTile.OccupyTile(PC.PlayerCharacterUnit(name="Knight", spritesheet=SI.AllyKnightStanding, sprite=SI.AllyKnightStanding, reach=2, power=1, critChance=1, critDamage=1, health=1, speed=1, defense=1))
                             else:
                                 hoveredTile.unit.FaceLeft()

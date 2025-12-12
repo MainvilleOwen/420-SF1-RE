@@ -41,6 +41,7 @@ class TileMap:
 
         self.Whites = []
         self.Reds = []
+        self.Blues = []
 
 
     def RedefineAtributes(self):
@@ -124,6 +125,8 @@ class TileMap:
                 tile.BlitWhite(screen, viewX, viewY, self.WorldToViewX, self.WorldToViewY)
             elif tile in self.Reds:
                 tile.BlitRed(screen, viewX, viewY, self.WorldToViewX, self.WorldToViewY)
+            elif tile in self.Blues:
+                tile.BlitBlue(screen, viewX, viewY, self.WorldToViewX, self.WorldToViewY)
             else:
                 tile.Blit(screen, viewX, viewY, self.WorldToViewX, self.WorldToViewY)
 
@@ -321,9 +324,14 @@ class TileMap:
             self.Whites = [currentSelectedTile]
 
             if currentSelectedTile.TileOccupied():
-                self.Reds = currentSelectedTile.GetTilesInReach(self, currentSelectedTile.unit.reach)
+                self.Reds = list(currentSelectedTile.GetTilesInReach(self, currentSelectedTile.unit.reach))
+                self.Blues = list(currentSelectedTile.GetTilesInReach(self, currentSelectedTile.unit.speed))
+
+                for tile in self.Blues:
+                    if tile in self.Reds: self.Reds.remove(tile)
             else:
                 self.Reds = []
+                self.Blues = []
 
         return(currentSelectedTile)
             

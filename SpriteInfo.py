@@ -21,11 +21,8 @@ def LoadSpriteAssets():
      global FullGrassTileUnselectable
      FullGrassTileUnselectable = pygame.image.load("Assets/IsoTileset/Grass/FullGrass/FullGrassTileUnselectable.png").convert_alpha()
 
-     global EmptyFullGrassTile
-     EmptyFullGrassTile = pygame.image.load("Assets/IsoTileset/Grass/FullGrass/EmptyFullGrassTile.png").convert_alpha()
-
-     global EmptyFullGrassTileSelected
-     EmptyFullGrassTileSelected = pygame.image.load("Assets/IsoTileset/Grass/FullGrass/EmptyFullGrassSelectedTile.png").convert_alpha()
+     global FullGrassTileBlue
+     FullGrassTileBlue = pygame.image.load("Assets/IsoTileset/Grass/FullGrass/FullGrassTileBlue.png").convert_alpha()
 
 # Creating Rock Grass Tile Sprites
      global RockGrassTile
@@ -37,11 +34,8 @@ def LoadSpriteAssets():
      global RockGrassTileUnselectable
      RockGrassTileUnselectable = pygame.image.load("Assets/IsoTileset/Grass/RockGrass/RockGrassTileUnselectable.png").convert_alpha()
 
-     global EmptyRockGrassTile
-     EmptyRockGrassTile = pygame.image.load("Assets/IsoTileset/Grass/RockGrass/EmptyRockGrassTile.png").convert_alpha()
-
-     global EmptyRockGrassTileSelected
-     EmptyRockGrassTileSelected = pygame.image.load("Assets/IsoTileset/Grass/RockGrass/EmptyRockGrassSelectedTile.png").convert_alpha()
+     global RockGrassTileBlue
+     RockGrassTileBlue = pygame.image.load("Assets/IsoTileset/Grass/RockGrass/RockGrassTileBlue.png").convert_alpha()
 
 
 # Creating Desert Sand Tile Sprites
@@ -54,19 +48,8 @@ def LoadSpriteAssets():
      global DesertSandTileUnselectable
      DesertSandTileUnselectable = pygame.image.load("Assets/IsoTileset/Desert/DesertSandTileUnselectable.png").convert_alpha()
 
-     global EmptyDesertTile
-     EmptyDesertTile = pygame.image.load("Assets/IsoTileset/Desert/EmptyDesertSandTile.png").convert_alpha()
-
-     global  EmptyDesertTileSelected
-     EmptyDesertTileSelected = pygame.image.load("Assets/IsoTileset/Desert/EmptyDesertSandSelectedTile.png").convert_alpha()
-
-
-# Creating Empty Tile Sprites
-     global EmptyTile
-     EmptyTile = pygame.image.load("Assets/IsoTileset/Common/EmptyTile.png").convert_alpha()
-
-     global EmptyTileSelected
-     EmptyTileSelected = pygame.image.load("Assets/IsoTileset/Common/EmptySelectedTile.png").convert_alpha()
+     global DesertSandTileBlue
+     DesertSandTileBlue = pygame.image.load("Assets/IsoTileset/Desert/DesertSandTileBlue.png").convert_alpha()
 
 
 # Creating Water Tile Sprite
@@ -91,19 +74,6 @@ def LoadSpriteAssets():
           FullGrassTile: FullGrassTileSelected,
           RockGrassTile: RockGrassTileSelected,
           DesertSandTile: DesertSandTileSelected,
-
-          EmptyTile: EmptyTileSelected,
-          EmptyFullGrassTile: EmptyFullGrassTileSelected,
-          EmptyRockGrassTile: EmptyRockGrassTileSelected,
-          EmptyDesertTile: EmptyDesertTileSelected
-          }
-
-# This dictionary takes in an empty version of a tile (the clear ones you cycle through when making a tile) and gives back the regular version of the sprite
-     global EmptyToTileConversion
-     EmptyToTileConversion = {
-          EmptyFullGrassTile: FullGrassTile,
-          EmptyRockGrassTile: RockGrassTile,
-          EmptyDesertTile: DesertSandTile
           }
      
 # This dictionary takes in a regular tile sprite and returns the unselectable version of that tile
@@ -115,6 +85,13 @@ def LoadSpriteAssets():
           WaterTile: WaterTileUnselectable
      }
 
+     global tileBlueConversion
+     tileBlueConversion = {
+          FullGrassTile: FullGrassTileBlue,
+          RockGrassTile: RockGrassTileBlue,
+          DesertSandTile: DesertSandTileBlue,
+          }
+
 # This is a list of all the tiles that can be interacted with
      global interactableTiles
-     interactableTiles = [EmptyTile, FullGrassTile, RockGrassTile, DesertSandTile]
+     interactableTiles = [ FullGrassTile, RockGrassTile, DesertSandTile]

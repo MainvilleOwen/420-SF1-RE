@@ -56,7 +56,21 @@ class Tile:
                 unitTileX, unitTileY = x, y
                 
             self.displayUnit.Blit(screen, unitTileX + (self.sprite.get_width())//4, unitTileY)
+            
+    def BlitBlue(self, screen:pygame.Surface, x:int, y:int, WTVX=None, WTVY=None):
+        heightChangeFactor = 0
+        screen.blit(SI.tileBlueConversion[self.sprite], (x, y + self.yOffset + heightChangeFactor))
 
+        if self.terrain:
+            screen.blit(self.terrain, (x, y + heightChangeFactor))
+
+        if self.displayUnit and self.displayUnit.displayTile == self:
+            if WTVX and WTVY:
+                unitTileX, unitTileY = WTVX(self.displayUnit.tile.x, self.displayUnit.tile.y), WTVY(self.displayUnit.tile.x, self.displayUnit.tile.y, self.displayUnit.tile.z)
+            else:
+                unitTileX, unitTileY = x, y
+                
+            self.displayUnit.Blit(screen, unitTileX + (self.sprite.get_width())//4, unitTileY)
 
     def Blit(self, screen:pygame.Surface, x:int, y:int, WTVX=None, WTVY=None):
         screen.blit(self.sprite, (x, y + self.yOffset))
