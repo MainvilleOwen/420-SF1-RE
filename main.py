@@ -1,3 +1,88 @@
+"""
+Intro to Programming – Final Project
+Student Name: Owen Mainville
+Project Title: Tactical Grid Engine
+
+Description:
+
+This project implements a turn-based tactical grid engine in Python using Pygame, featuring tile-based movement, unit pathfinding, and interactive terrain.
+It includes an isometric tilemap renderer with visual effects such as water tiles that smoothly bobs using a sin function, and layered draw order to properly display units over tiles.
+Player and enemy units occupy tiles, can move along calculated paths with smooth interpolation, and face correct directions based on movement vectors.
+Tile highlighting and reach indicators support click-to-move controls and visual feedback for valid movement ranges.
+The engine is designed for extensibility, allowing for later implementation of combat logic, AI behaviors, and additional tile types.
+
+Instructions:
+
+==============================
+ HOW TO RUN THE PROGRAM
+==============================
+
+To launch the demo, run main.py.
+All initialization—tilemap creation, unit spawning, and rendering is handled internally.
+No additional configuration files are required.
+
+==============================
+ THE DEMO - CONTROLS
+==============================
+
+Hovering over a tile highlights it in white if is able to be walked on by anyone, and red if it cannot be walked on.
+
+Hovering over the character will highlight all tiles in movement range (the speed attribute) in Blue, and all tiles in attacking range in Red.
+    (Tiles in both categories appear as Blue only)
+
+Clicking on a tile in movement range will move the character to that tile.
+
+The Up arrow rotates the tilemap 90 degrees clockwise
+The Down arrow rotates the tilemap 90 degrees counter clockwise
+
+The escape button lifts the tiles off of the screen before exiting the program.
+
+==============================
+ TILEMAP — HOW TO MODIFY
+==============================
+
+Tile generation happens in TileMapClass.py inside LoadMap().
+Tilemaps are nested lists that form 3d matrices. More can be made, and they should all be stored into this file.
+TileMap (THE CLASS) contains 3 lists for different variations of coloured sprites that can indicate different things. So far, White, Red, and Blue are implemented.
+Making them in different functions to only load them when needed might be wise.
+They can be created with functions, and their sprite can be passed into the MakeTile functions (MakeTileWalkable(...), MakeTileUnwalkable(...)).
+Pro tip: make wrapper functions inside the tilemap file that are 2 character long, that way tilemaps stay perfectly lined up.
+
+
+Each tile gets a <sprite> attribute, which can then be checked for to implement custom logic for specific tiles.
+For example, tiles with a water sprite have their own logic at the tilemap level to make them bob currently.
+Tiles never have another version of their sprite assigned to that variable, instead conversions are used at runtime only when drawing.
+Each tile also gets a <walkable> attribute that can be changed, but using one or the other MakeTile function will set this to true or false respectively.
+
+Tile occupancy for units uses two systems:
+  - Logical occupancy: AssignTileLogically(unit) / UnAssignUnitVisually()
+  - Visual ordering: AssignUnitVisually(unit) / UnAssignUnitVisually()
+  - Both at once: OccupyTile(unit) / UnOccupyTile()
+These are all contained in the tile class, not the unit.
+
+Draw order is computed in GetTileDrawOrder().
+
+==============================
+ UNITS — HOW TO MODIFY
+==============================
+
+Units are created in main.py using the Unit class. Changing the
+(x, y, z) tile passed into Unit() changes where a unit spawns.
+
+Movement uses flood-fill pathfinding through FindPath(), and actual motion
+is animated in UpdateRelativePosition() using frame-based movement.
+Currently units do not have a spritesheet setup, but it can be implemented if functions are added, and they have the parameter for it.
+
+Unit facing uses helper functions:
+  FaceLeft(), FaceRight(), FaceFront(), FaceBack(), etc.
+Modify these to integrate real sprite sheets.
+
+You can safely edit attributes inside main.py, including moveRange, sprite paths, and custom stats.
+Unit Presets can be made, like Knight1.
+Each Unit contains a link to the tile its on and each tile contains a link to unit its on, which allows for logic to work both ways.
+"""
+
+
 import pygame
 
 import SpriteInfo as SI
