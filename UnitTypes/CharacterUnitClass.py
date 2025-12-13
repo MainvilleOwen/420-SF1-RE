@@ -4,10 +4,10 @@ import random
 from UnitTypes.UnitClass import Unit
 
 class CharacterUnit(Unit):
-    def __init__(self, name:str, spritesheet:pygame.Surface, sprite:pygame.Surface, reach:int, power:int, critChance:int, critDamage:int, health:int, speed:int, defense:int, team:int, isAlive:bool):
+    def __init__(self, name:str, spritesheet:object, spriteIndex:int, reach:int, power:int, critChance:int, critDamage:int, health:int, speed:int, defense:int, team:int, isAlive:bool):
         self.isAlive = isAlive
 
-        super().__init__(name, spritesheet, sprite, reach, power, critChance, critDamage, team)
+        super().__init__(name, spritesheet, spriteIndex, reach, power, critChance, critDamage, team)
 
         self.health = health
         self.maxHealth = health
@@ -20,6 +20,9 @@ class CharacterUnit(Unit):
 # Path and movement logic variables
         self.relativeX, self.relativeY = 0, 0
         self.path = None
+        self.movementCycle = [-1, 1, 1, -1]
+        self.frameTimer = 0
+        self.frameLenght = 2
 
 
     def TakeDamage(self, damage):
@@ -30,7 +33,6 @@ class CharacterUnit(Unit):
         return(self.health)
     
     def KillSelf(self):
-        """self.sprite = Prone Sprite"""
         self.isAlive = False
 
     def SetPath(self, path:list):
@@ -43,13 +45,18 @@ class CharacterUnit(Unit):
         # Amount of pixels moved per frame (sort of, its like directional pixels not bound by the grid if that makes sense. Distance formula)
         # Change the 4 to speed it up or slow it down
         deltaTime = 1 if deltaTime == 0 else deltaTime
-        movedPixels = 3 * deltaTime
+        movedPixels = 4 * deltaTime
 
         if not self.path or len(self.path) < 1:
             self.tile.OccupyTile(self)
             self.relativeX, self.relativeY = 0, 0
             self.path = None
+
+            self.spriteIndex = self.baseIndex
+
             return None
+        
+        self.UpdateAnimation(deltaTime)
         
         nextTile = self.path[0]
 
@@ -96,6 +103,16 @@ class CharacterUnit(Unit):
 
     def MovementCheck(self):
         return True if self.path else False
+    
+    def UpdateAnimation(self, deltatime):
+        self.frameTimer += deltatime
+        if self.frameTimer >= self.frameLenght:
+            self.frameTimer = 0
+
+            self.spriteIndex = self.baseIndex + self.movementCycle[0]
+
+            self.movementCycle.append(self.movementCycle.pop(0))
+
 
     def Blit(self, screen:pygame.surface, x:int, y:int):
-        screen.blit(self.sprite, (x + self.relativeX, y + self.relativeY - self.heightOfSprite + 32))
+        screen.blit(self.spritesheet.GetSprite(self.spriteIndex, (not self.facingLeft)), (x + self.relativeX, y + self.relativeY - self.heightOfSprite + 32))

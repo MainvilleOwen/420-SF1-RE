@@ -4,8 +4,8 @@ import random
 from UnitTypes.UnitClass import Unit
 
 class ObjectUnit(Unit):
-    def __init__(self, name:str, spritesheet:pygame.Surface, sprite:pygame.Surface, reach:int, power:int, countdown:int, team:int):
-        super().__init__(name, spritesheet, sprite, reach, power, team)
+    def __init__(self, name:str, spritesheet:object, spriteIndex:int, reach:int, power:int, countdown:int, team:int):
+        super().__init__(name, spritesheet, spriteIndex, reach, power, team)
 # Amount of turns the the object lasts
         self.countdown = countdown
     

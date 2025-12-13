@@ -1,5 +1,5 @@
 import pygame
-import SpriteInfo as SI
+import Sprites.SpriteInfo as SI
 
 # Each Tile in the tilemap is its own object
 class Tile:
@@ -34,7 +34,7 @@ class Tile:
                 else:
                     unitTileX, unitTileY = x, y
                 
-                self.displayUnit.Blit(screen, unitTileX + (self.sprite.get_width())//4, unitTileY)
+                self.displayUnit.Blit(screen, unitTileX + (self.sprite.get_width() // 2) - (self.displayUnit.spritesheet.spriteWidth // 2), unitTileY)
 
         else:
             screen.blit(SI.tileUnselectableConversion[self.sprite], (x, y + self.yOffset + heightChangeFactor))
@@ -55,7 +55,7 @@ class Tile:
             else:
                 unitTileX, unitTileY = x, y
                 
-            self.displayUnit.Blit(screen, unitTileX + (self.sprite.get_width())//4, unitTileY)
+            self.displayUnit.Blit(screen, unitTileX + (self.sprite.get_width() // 2) - (self.displayUnit.spritesheet.spriteWidth // 2), unitTileY)
             
     def BlitBlue(self, screen:pygame.Surface, x:int, y:int, WTVX=None, WTVY=None):
         heightChangeFactor = 0
@@ -70,7 +70,7 @@ class Tile:
             else:
                 unitTileX, unitTileY = x, y
                 
-            self.displayUnit.Blit(screen, unitTileX + (self.sprite.get_width())//4, unitTileY)
+            self.displayUnit.Blit(screen, unitTileX + (self.sprite.get_width() // 2) - (self.displayUnit.spritesheet.spriteWidth // 2), unitTileY)
 
     def Blit(self, screen:pygame.Surface, x:int, y:int, WTVX=None, WTVY=None):
         screen.blit(self.sprite, (x, y + self.yOffset))
@@ -84,7 +84,7 @@ class Tile:
             else:
                 unitTileX, unitTileY = x, y
 
-            self.displayUnit.Blit(screen, unitTileX + (self.sprite.get_width())//4, unitTileY)
+            self.displayUnit.Blit(screen, unitTileX + (self.sprite.get_width() // 2) - (self.displayUnit.spritesheet.spriteWidth // 2), unitTileY)
 
 # Function that checks if the tile has a unit or a piece of terrain on it
     def TileOccupied(self):

@@ -1,8 +1,8 @@
 import pygame
 import math
 import ScreenAndClock as SaC
-import SpriteInfo as SI
-import BackgroundClass as B
+import Sprites.SpriteInfo as SI
+import Sprites.BackgroundClass as B
 
 
 # Smoothstep and Clamp live here as they are used at the tilemap level, but don't need to be inside the classS

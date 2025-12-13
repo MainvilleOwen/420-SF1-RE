@@ -5,18 +5,20 @@ import random
 from TileClassAndOperations.TileClass import Tile
 
 class Unit:
-    def __init__(self, name:str, spritesheet:pygame.Surface, sprite:pygame.Surface, reach:int, power:int, critChance:int, critDamage:int, team:int):
+    def __init__(self, name:str, spritesheet:object, spriteIndex:int, reach:int, power:int, critChance:int, critDamage:int, team:int):
 # Name that will be shown when Unit is selected
         self.name = name
 
 # Spritesheet of unit
         self.spritesheet = spritesheet
 # Current sprite used by the unit
-        self.sprite = spritesheet
-        self.heightOfSprite = self.sprite.get_height()
+        self.baseIndex = spriteIndex
+        self.spriteIndex = self.baseIndex
 
         self.facingLeft = True
         self.facingFront = True
+
+        self.heightOfSprite = self.spritesheet.GetSprite(self.spriteIndex, (not self.facingLeft)).get_height()
 
 # How far the unit can attack
         self.reach = reach
@@ -58,27 +60,25 @@ class Unit:
             target.KillSelf()
         
     def Blit(self, screen:pygame.surface, x:int, y:int):
-        screen.blit(self.sprite, (x, y - self.heightOfSprite + 32))
+        screen.blit(self.spritesheet.GetSprite(self.spriteIndex, (not self.facingLeft)), (x, y - self.heightOfSprite + 32))
 
     def FaceLeft(self):
-        if not self.facingLeft:
-            self.sprite = pygame.transform.flip(self.sprite, True, False)
         return True
     
     def FaceRight(self):
-        if self.facingLeft:
-            self.sprite = pygame.transform.flip(self.sprite, True, False)
         return False
     
     def FaceFront(self):
         if not self.facingFront:
-            # Add switching of back sprite to front sprite
+            if self.baseIndex > 2:
+                self.baseIndex -= 3
             return True
         return True
-    
+        
     def FaceBack(self):
         if self.facingFront:
-            # Add switching of front sprite to back sprite
+            if self.baseIndex < 3:
+                self.baseIndex += 3
             return False
         return False
 
@@ -101,4 +101,5 @@ class Unit:
                 if self.facingFront: self.facingLeft = self.FaceLeft()
                 else: self.facingFront = self.FaceBack()
 
-        
+    def SetSprite(self, index:int):
+        self.spriteIndex = index

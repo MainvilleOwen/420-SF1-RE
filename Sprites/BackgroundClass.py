@@ -1,6 +1,6 @@
 import pygame
 
-import SpriteInfo as SI
+import Sprites.SpriteInfo as SI
 import ScreenAndClock as S
 
 class BackgroundClass:

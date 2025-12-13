@@ -1,6 +1,6 @@
 import TileClassAndOperations.TileClass as T
 import TileClassAndOperations.TileMapClass as TC
-import SpriteInfo as SI
+import Sprites.SpriteInfo as SI
 
 def FG():
     return(T.MakeTileWalkable(SI.FullGrassTile))

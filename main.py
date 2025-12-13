@@ -7,7 +7,8 @@ Description:
 
 This project implements a turn-based tactical grid engine in Python using Pygame, featuring tile-based movement, unit pathfinding, and interactive terrain.
 It includes an isometric tilemap renderer with visual effects such as water tiles that smoothly bobs using a sin function, and layered draw order to properly display units over tiles.
-Player and enemy units occupy tiles, can move along calculated paths with smooth interpolation, and face correct directions based on movement vectors.
+Player and enemy units occupy tiles, can move along calc1'
+ulated paths with smooth interpolation, and face correct directions based on movement vectors.
 Tile highlighting and reach indicators support click-to-move controls and visual feedback for valid movement ranges.
 The engine is designed for extensibility, allowing for later implementation of combat logic, AI behaviors, and additional tile types.
 
@@ -85,7 +86,7 @@ Each Unit contains a link to the tile its on and each tile contains a link to un
 
 import pygame
 
-import SpriteInfo as SI
+import Sprites.SpriteInfo as SI
 import ScreenAndClock as SaC
 
 import TileClassAndOperations.TileClass as T
@@ -96,7 +97,7 @@ import TileClassAndOperations.TileMaps as TM
 from UnitTypes import PlayerCharacterUnitClass as PC
 from UnitTypes import EnemyCharacterUnitClass as EC
 
-import BackgroundClass as B
+import Sprites.BackgroundClass as B
 
 def main():
     # Functions that load in all elements needed to start running the game *(ORDER MATTERS, THESE ARE ESSENTIAL)*
@@ -131,7 +132,7 @@ def main():
 
             currentTileMap.LiftTilesOntoScreen()
 
-            Knight1 = PC.PlayerCharacterUnit(name="Knight", spritesheet=SI.AllyKnightStanding, sprite=SI.AllyKnightStanding, reach=4, power=1, critChance=1, critDamage=1, health=1, speed=3, defense=1)
+            Knight1 = PC.PlayerCharacterUnit(name="Knight", spritesheet=SI.AllyKnightSpritesheet, spriteIndex=1, reach=13, power=1, critChance=1, critDamage=1, health=1, speed=12, defense=1)
             currentTileMap.SafelyGetTile(11, 9, 0).OccupyTile(Knight1)
 
             tileMapLoaded = True
