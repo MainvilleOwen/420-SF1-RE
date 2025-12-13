@@ -304,7 +304,7 @@ class TileMap:
             phase = (tile.x + tile.y) * 0.5
             tile.yOffset = bob * math.sin(self.waveTime * speed + phase)
     
-    def FindHoveredTile(self, mouseX:int, mouseY:int):
+    def FindHoveredTile(self, mouseX:int, mouseY:int, currentUnit):
         currentSelectedTile = None
         for (x, y, z) in self.tileDrawOrder:
             tile = self.SafelyGetTile(x, y, z)
@@ -315,8 +315,16 @@ class TileMap:
             if (abs(diffX)/32 + abs(diffY)/16) <= 1:
                 currentSelectedTile = tile
             
+        if currentUnit:
+            self.Reds = list(currentUnit.tile.GetTilesInReach(self, currentUnit.reach))
+            self.Blues = list(currentUnit.tile.GetTilesInReach(self, currentUnit.speed))
+            self.Whites = [currentSelectedTile]
 
-        if not currentSelectedTile:
+            for tile in self.Blues:
+                if tile in self.Reds: self.Reds.remove(tile)
+        
+
+        elif not currentSelectedTile:
             self.Reds = []
             self.Whites = []
             return None

@@ -28,18 +28,22 @@ class CharacterUnit(Unit):
     def TakeDamage(self, damage):
         self.health = max(0, self.health - damage)
         return(damage)
+    
 
     def CheckForLife(self):
         return(self.health)
     
+    
     def KillSelf(self):
         self.isAlive = False
+
 
     def SetPath(self, path:list):
         if not self.path and path:
             self.path = path
             return True
         return False
+    
 
     def UpdateRelativePosition(self, deltaTime, tileMap):
         # Amount of pixels moved per frame (sort of, its like directional pixels not bound by the grid if that makes sense. Distance formula)
@@ -101,8 +105,10 @@ class CharacterUnit(Unit):
 
             self.relativeX, self.relativeY = 0, 0
 
+
     def MovementCheck(self):
         return True if self.path else False
+    
     
     def UpdateAnimation(self, deltatime):
         self.frameTimer += deltatime

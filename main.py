@@ -31,7 +31,8 @@ Hovering over a tile highlights it in white if is able to be walked on by anyone
 Hovering over the character will highlight all tiles in movement range (the speed attribute) in Blue, and all tiles in attacking range in Red.
     (Tiles in both categories appear as Blue only)
 
-Clicking on a tile in movement range will move the character to that tile.
+Clicking on the tile with the character on it will select that character, and show all the movement options even without hovering.
+Clicking on a tile in blue during this mode will move the character.
 
 The Up arrow rotates the tilemap 90 degrees clockwise
 The Down arrow rotates the tilemap 90 degrees counter clockwise
@@ -76,9 +77,9 @@ Currently units do not have a spritesheet setup, but it can be implemented if fu
 
 Unit facing uses helper functions:
   FaceLeft(), FaceRight(), FaceFront(), FaceBack(), etc.
-Modify these to integrate real sprite sheets.
+These have a few hardcoded values in these that are spritesheet dependant.
 
-You can safely edit attributes inside main.py, including moveRange, sprite paths, and custom stats.
+You can safely edit attributes to create different unit combinations.
 Unit Presets can be made, like Knight1.
 Each Unit contains a link to the tile its on and each tile contains a link to unit its on, which allows for logic to work both ways.
 """
@@ -114,6 +115,7 @@ def main():
 
     currentTileMap = TM.tileMap1
     hoveredTile = None
+    currentUnit = None
 
     nextTileMap = None
     tileMapLoaded = False
@@ -145,7 +147,7 @@ def main():
 
     # Logic for checking which tile is being hovered over/selected (Does not happen during transitions)
         if not paused:
-            hoveredTile = currentTileMap.FindHoveredTile(mouseX, mouseY)
+            hoveredTile = currentTileMap.FindHoveredTile(mouseX, mouseY, currentUnit)
 
 
     # Draws every tile in order of rendering
@@ -166,19 +168,12 @@ def main():
                 if (event.type == pygame.MOUSEBUTTONDOWN) and not paused:
                     if (event.button == 1):
                         if currentTileMap and hoveredTile and hoveredTile.walkable:
-                            if not hoveredTile.TileOccupied():
-                                Knight1.SetPath(hoveredTile.ReconstructPath(Knight1.tile.GetTilesInReach(currentTileMap, Knight1.speed)))
-                                """hoveredTile.OccupyTile(PC.PlayerCharacterUnit(name="Knight", spritesheet=SI.AllyKnightStanding, sprite=SI.AllyKnightStanding, reach=2, power=1, critChance=1, critDamage=1, health=1, speed=1, defense=1))
-                            else:
-                                hoveredTile.unit.FaceLeft()
-                                hoveredTile.unit.FaceRight()"""
-                    elif (event.button == 3):
-                        if hoveredTile and hoveredTile.walkable:
-                            if not hoveredTile.TileOccupied():
-                                """hoveredTile.OccupyTile(EC.EnemyCharacterUnit(name="Enemy", spritesheet=SI.EnemyKnightStanding, sprite=SI.EnemyKnightStanding, reach=1, power=1, critChance=1, critDamage=1, health=1, speed=1, defense=1))
-                            else:
-                                hoveredTile.unit.FaceLeft()
-                                hoveredTile.unit.FaceRight()"""
+                            if hoveredTile.TileOccupied() and not currentUnit:
+                                currentUnit = hoveredTile.unit
+
+                            elif not hoveredTile.TileOccupied() and currentUnit:
+                                currentUnit.SetPath(hoveredTile.ReconstructPath(Knight1.tile.GetTilesInReach(currentTileMap, Knight1.speed)))
+                                currentUnit = None
 
 
     # ALL MOUSE PRESSING EVENTS
