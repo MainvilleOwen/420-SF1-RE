@@ -30,7 +30,7 @@ This project is intended as a **foundation system** rather than a complete game,
 3. Ensure all project files and asset folders remain in the same directory structure.
 4. Run the program by executing:
    ```bash
-   python project.py
+   python main.py
    ```
 
 All initialization (screen setup, asset loading, tilemap creation, and unit spawning) is handled automatically when the program starts.
