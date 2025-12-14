@@ -10,9 +10,15 @@ class ObjectUnit(Unit):
         self.countdown = countdown
     
     def KillSelf(self):
+        """
+        Unused
+        """
         del self
 
     def Attack(self, tileMap, areaAttack:bool=True):
+        """
+        Unused
+        """
         TilesInReach = self.tile.GetTilesInReach(tileMap)
         targets = []
 
@@ -30,6 +36,9 @@ class ObjectUnit(Unit):
 
 
     def TickCountdown(self):
+        """
+        Unused
+        """
         self.countdown -= 1
 
         if self.countdown <= 0:
@@ -37,5 +46,8 @@ class ObjectUnit(Unit):
             self.KillSelf()
 
     def Act(self, tileMap):
+        """
+        Unused
+        """
         self.Attack(tileMap)
         self.TickCountdown()

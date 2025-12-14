@@ -4,6 +4,12 @@ import Sprites.SpriteInfo as SI
 # Each Tile in the tilemap is its own object
 class Tile:
     def __init__(self, sprite:pygame.Surface, walkable:bool=True):
+        """
+        Initialize a Tile object.
+        Args:
+            sprite (pygame.Surface): Image of the tile.
+            walkable (bool): Whether units can walk on this tile.
+        """
 # The image of the sprite
         self.sprite = sprite
 # If the sprite can be walked on by units
@@ -22,6 +28,13 @@ class Tile:
     
 
     def BlitWhite(self, screen:pygame.Surface, x:int, y:int, WTVX=None, WTVY=None):
+        """
+        Draw the tile in white (highlighted) on screen.
+        Args:
+            screen (pygame.Surface): The surface to draw on.
+            x (int), y (int): Screen coordinates.
+            WTVX, WTVY: Optional world-to-view functions for unit positioning.
+        """
         heightChangeFactor = -2
 
         if self.walkable:
@@ -43,6 +56,10 @@ class Tile:
                 screen.blit(self.terrain, (x, y + heightChangeFactor))
 
     def BlitRed(self, screen:pygame.Surface, x:int, y:int, WTVX=None, WTVY=None):
+        """
+        Draw the tile in red (unwalkable/highlighted) on screen.
+        Args: same as BlitWhite.
+        """
         heightChangeFactor = 0
         screen.blit(SI.tileUnselectableConversion[self.sprite], (x, y + self.yOffset + heightChangeFactor))
 
@@ -58,6 +75,10 @@ class Tile:
             self.displayUnit.Blit(screen, unitTileX + (self.sprite.get_width() // 2) - (self.displayUnit.spritesheet.spriteWidth // 2), unitTileY)
             
     def BlitBlue(self, screen:pygame.Surface, x:int, y:int, WTVX=None, WTVY=None):
+        """
+        Draw the tile in blue (movement range) on screen.
+        Args: same as BlitWhite.
+        """
         heightChangeFactor = 0
         screen.blit(SI.tileBlueConversion[self.sprite], (x, y + self.yOffset + heightChangeFactor))
 
@@ -73,6 +94,10 @@ class Tile:
             self.displayUnit.Blit(screen, unitTileX + (self.sprite.get_width() // 2) - (self.displayUnit.spritesheet.spriteWidth // 2), unitTileY)
 
     def Blit(self, screen:pygame.Surface, x:int, y:int, WTVX=None, WTVY=None):
+        """
+        Draw the tile normally (no color highlight) on screen.
+        Args: same as BlitWhite.
+        """
         screen.blit(self.sprite, (x, y + self.yOffset))
 
         if self.terrain:
@@ -88,10 +113,22 @@ class Tile:
 
 # Function that checks if the tile has a unit or a piece of terrain on it
     def TileOccupied(self):
+        """
+        Check if the tile has a unit or terrain.
+        Returns:
+            bool: True if occupied, False otherwise.
+        """
         return (self.unit or self.terrain)
     
 # Function that assigns a unit to a tile (LOGIC WISE AND VISUAL WISE)
     def OccupyTile(self, unit:object):
+        """
+        Assign a unit to the tile both logically and visually.
+        Args:
+            unit (object): Unit to occupy the tile.
+        Returns:
+            bool: True if successfully occupied, False otherwise.
+        """
         if self.TileOccupied() or not self.walkable:
             return False
         
@@ -103,6 +140,9 @@ class Tile:
         return True
     
     def UnOccupyTile(self):
+        """
+        Remove a unit from the tile both logically and visually.
+        """
         if self.unit:
             self.unit.tile = None
             self.unit.displayTile = None
@@ -111,23 +151,46 @@ class Tile:
             self.displayUnit = None
 
     def AssignUnitVisually(self, unit:object):
+        """
+        Assign unit visually without affecting logical occupancy.
+        Args:
+            unit (object): Unit to assign visually.
+        """
         self.displayUnit = unit
         unit.displayTile = self
 
     def UnAssignUnitVisually(self):
+        """
+        Remove visual assignment of a unit from this tile.
+        """
         self.displayUnit.displayTile = None
         self.displayUnit = None
 
     def AssignUnitLogically(self, unit:object):
+        """
+        Assign unit logically without affecting visuals.
+        Args:
+            unit (object): Unit to assign logically.
+        """
         self.unit = unit
         unit.tile = self
 
     def UnAssignUnitLogically(self):
+        """
+        Remove logical assignment of a unit from this tile.
+        """
         self.unit.tile = None
         self.unit = None
 
 # Function that returns the Adjacent Tiles of the tile object it is called on.
     def GetAdjacentTiles(self, tileMap:object):
+        """
+        Get all walkable adjacent tiles in 3D space.
+        Args:
+            tileMap (object): TileMap instance containing tiles.
+        Returns:
+            list: Adjacent walkable Tile objects.
+        """
         adjacentTiles = []
 
         x, y, z = self.x, self.y, self.z
@@ -149,6 +212,14 @@ class Tile:
 # It takes in an int telling it how far in any direction to reach, each +1 is one more tile checked
 # Takes in tilemap too since tiles dont store the tileMap they are from.
     def GetTilesInReach(self, tileMap:object, reach:int):
+        """
+        Get all tiles within movement or ability range.
+        Args:
+            tileMap (object): TileMap instance.
+            reach (int): Range in tiles.
+        Returns:
+            dict: Tiles mapped to their parent tiles for path reconstruction.
+        """
 
 # Add self as the first element of the dictionary with a value of None because it doesnt come from another tile. Then adds it to the queue of tiles to be checked by the GetAdjacentTiles Function
         tilePathOrder = {self: None}
@@ -182,6 +253,13 @@ class Tile:
         return(tilePathOrder)
         
     def ReconstructPath(self, tileParents:dict):
+        """
+        Reconstruct path from parent dictionary.
+        Args:
+            tileParents (dict): Mapping of tiles to their parent tiles.
+        Returns:
+            list: Tiles in path from start to target.
+        """
         path = []
         targetTile = self
         
@@ -193,8 +271,22 @@ class Tile:
         return path
 
 def MakeTileWalkable(sprite:pygame.Surface):
+    """
+    Create a walkable tile.
+    Args:
+        sprite (pygame.Surface): Tile image.
+    Returns:
+        Tile: Walkable Tile object.
+    """
     return(Tile(sprite))
 
 def MakeTileUnWalkable(sprite:pygame.Surface):
+    """
+    Create an unwalkable tile.
+    Args:
+        sprite (pygame.Surface): Tile image.
+    Returns:
+        Tile: Unwalkable Tile object.
+    """
     return(Tile(sprite, False))
 

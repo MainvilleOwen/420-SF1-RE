@@ -101,6 +101,13 @@ from UnitTypes import EnemyCharacterUnitClass as EC
 import Sprites.BackgroundClass as B
 
 def main():
+    """
+    Run the main game loop.
+    Handles initialization, input processing, unit updates,
+    tile rendering, and program shutdown.
+    Returns:
+        None
+    """
     # Functions that load in all elements needed to start running the game *(ORDER MATTERS, THESE ARE ESSENTIAL)*
     SaC.InitializeScreenAndClock()
 
@@ -206,3 +213,4 @@ def main():
     pygame.quit()
 
 main()
+

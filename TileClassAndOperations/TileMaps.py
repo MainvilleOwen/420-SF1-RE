@@ -2,6 +2,7 @@ import TileClassAndOperations.TileClass as T
 import TileClassAndOperations.TileMapClass as TC
 import Sprites.SpriteInfo as SI
 
+# Wrapper functions to have the same amount of characters as None in the tilemap to make tiles.
 def FG():
     return(T.MakeTileWalkable(SI.FullGrassTile))
 
@@ -24,6 +25,13 @@ def DN():
     return(T.MakeTileUnWalkable(SI.DesertSandTile))
 
 def CreateTileMaps():
+        """
+    Create and initialize all tile maps used in the game.
+    Stores the maps as global TileMap objects built from 3D nested lists.
+    Returns:
+        None
+    """
+        
 # These are the tilemaps. They are nested lists that act as 2d matrices.
 # The cool part is because pygame has the origin of the screen at the top left corner and going up in y is down on the screen, this basically matches the list idndexes with [y][x]
         global tileMap1

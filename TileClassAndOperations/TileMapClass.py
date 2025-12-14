@@ -7,9 +7,25 @@ import Sprites.BackgroundClass as B
 
 # Smoothstep and Clamp live here as they are used at the tilemap level, but don't need to be inside the classS
 def clampFunc(val:float, a=0, b=1):
+    """
+    Clamp a value between a and b.
+    Args:
+        val (float): Value to clamp.
+        a (float): Minimum.
+        b (float): Maximum.
+    Returns:
+        float: Clamped value.
+    """
     return max(a, min(b, val))
 
 def smoothStepFunc(val:float):
+    """
+    Smoothstep interpolation function.
+    Args:
+        val (float): Input value (0-1).
+    Returns:
+        float: Smoothed output (0-1).
+    """
     clampedVal = clampFunc(val)
     return ((clampedVal**2) * (3 - 2*clampedVal))
 
@@ -17,6 +33,11 @@ def smoothStepFunc(val:float):
 
 class TileMap:
     def __init__(self, tileList:list):
+        """
+        Initialize TileMap.
+        Args:
+            tileList (list): 3D list of Tile objects.
+        """
 
         self.tileList = tileList
 
@@ -45,6 +66,9 @@ class TileMap:
 
 
     def RedefineAtributes(self):
+        """
+        Recalculate TileMap attributes after modifications or rotations.
+        """
 
         self.xLength = len(self.tileList[0][0])
         self.yLength = len(self.tileList[0])
@@ -61,6 +85,14 @@ class TileMap:
 
 
     def SafelyGetTile(self, x:int, y:int, z:int):
+        """
+        Get a tile if coordinates are in bounds.
+        Args:
+            x, y, z (int): Tile coordinates.
+        Returns:
+            Tile or None: Tile at coordinates or None if out of bounds.
+        """
+
         if z < 0 or z > self.zMaxIndex: return None
         if y < 0 or y > self.yMaxIndex: return None
         if x < 0 or x > self.xMaxIndex: return None
@@ -69,6 +101,12 @@ class TileMap:
 
 
     def GetTileDrawOrder(self):
+        """
+        Compute the order to draw tiles for proper layering.
+        Returns:
+            list: List of (x, y, z) tuples in draw order.
+        """
+
         returnedTiles = []
         totalNum = 0
         while totalNum <= (self.zMaxIndex + self.yMaxIndex + self.xMaxIndex):
@@ -107,14 +145,23 @@ class TileMap:
         return(returnedTiles)
     
     def WorldToViewX(self, x:int, y:int):
+        """
+        Convert world X coordinate to screen X.
+        """
         return(32*x - 32*y + self.xAxisOffset)
     
     def WorldToViewY(self, x:int, y:int, z:int):
+        """
+        Convert world X coordinate to screen X.
+        """
         return(16*x + 16*y + 12*((self.zMaxIndex) - z) + self.yAxisOffset)
 
 
 
     def Blit(self):
+        """
+        Draw all tiles with highlights (White/Red/Blue) on screen.
+        """
         screen = SaC.screen
         for (x, y, z) in self.tileDrawOrder:
             tile = self.SafelyGetTile(x, y, z)
@@ -132,6 +179,11 @@ class TileMap:
 
 
     def RotateSelf(self, clockwise:bool):
+        """
+        Animate and rotate the tilemap 90 degrees clockwise or counterclockwise.
+        Args:
+            clockwise (bool): True = clockwise, False = counterclockwise.
+        """
         if clockwise:
             rotatedTileList =  [[list(row) for row in zip(*layer[::-1])] for layer in self.tileList]
             rotatedTileMap = TileMap(rotatedTileList)
@@ -215,6 +267,10 @@ class TileMap:
 
 
     def LiftTilesOffScreen(self):
+        """
+        Animate tiles lifting off the screen.
+        """
+        
         running = True
         SaC.deltaTime = 0.0
         maxLiftMinimum = 900
@@ -255,6 +311,10 @@ class TileMap:
 
 
     def LiftTilesOntoScreen(self):
+            """
+        Animate tiles lowering onto the screen.
+        """
+
             running = True
             SaC.deltaTime = 0.0
             maxLiftMinimum = 900
@@ -294,6 +354,12 @@ class TileMap:
                     break
 
     def UpdateWave(self, deltaTime):
+        """
+        Update the bobbing wave effect for water tiles.
+        Args:
+            deltaTime (float): Time elapsed since last frame.
+        """
+
         deltaTime = 0.015 if deltaTime == 0 else deltaTime
         self.waveTime += deltaTime
 
@@ -305,6 +371,15 @@ class TileMap:
             tile.yOffset = bob * math.sin(self.waveTime * speed + phase)
     
     def FindHoveredTile(self, mouseX:int, mouseY:int, currentUnit):
+        """
+        Find which tile the mouse is hovering over and update highlight lists.
+        Args:
+            mouseX, mouseY (int): Mouse coordinates.
+            currentUnit (Unit): Currently selected unit.
+        Returns:
+            Tile or None: The hovered tile.
+        """
+
         currentSelectedTile = None
         for (x, y, z) in self.tileDrawOrder:
             tile = self.SafelyGetTile(x, y, z)

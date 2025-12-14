@@ -6,6 +6,19 @@ from TileClassAndOperations.TileClass import Tile
 
 class Unit:
     def __init__(self, name:str, spritesheet:object, spriteIndex:int, reach:int, power:int, critChance:int, critDamage:int, team:int):
+        """
+        Create a base unit with stats, sprite data, and team ownership.
+        Args:
+            name (str): Name of the unit.
+            spritesheet (object): Spritesheet used to render the unit.
+            spriteIndex (int): Default sprtesheet index
+            reach (int): Attack range.
+            power (int): Base attack power.
+            critChance (int): Chance to deal critical damage.
+            critDamage (int): Bonus damage on critical hit.
+            team (int): Team ID (0 = player, 1+ = enemies).
+        """
+
 # Name that will be shown when Unit is selected
         self.name = name
 
@@ -39,15 +52,18 @@ class Unit:
         self.displayTile = None
 
 
-    def Act(self, tileMap):
-        pass
-
     def Attack(self, target):
+        """
+        Unused
+        """
         chance = random.randint(1, 100)
         if chance > target.defense:
             pass
 
     def DealDamageTo(self, target:object):
+        """
+        Unused
+        """
         chance = random.randint(1,100)
 
         totalDamage = self.power
@@ -60,8 +76,19 @@ class Unit:
             target.KillSelf()
         
     def Blit(self, screen:pygame.surface, x:int, y:int):
+        """
+        Draw the unit sprite to the screen.
+        Args:
+            screen (Surface): Pygame screen surface.
+            x (int): X screen position.
+            y (int): Y screen position.
+        Returns:
+            None
+        """
         screen.blit(self.spritesheet.GetSprite(self.spriteIndex, (not self.facingLeft)), (x, y - self.heightOfSprite + 32))
 
+# Group of functions to rotate the unit. They return the value you woant self.facingLeft or self.facingFront to be
+# The Front and Back ones offset the default sprite index so that it returns the backwards ones
     def FaceLeft(self):
         return True
     
@@ -83,6 +110,14 @@ class Unit:
         return False
 
     def Rotate(self, clockwise:bool):
+        """
+        Rotate the unit's facing direction.
+        Args:
+            clockwise (bool): True to rotate clockwise, False otherwise.
+        Returns:
+            None
+        """
+
         if clockwise:
             if self.facingLeft:
                 if self.facingFront: self.facingFront = self.FaceBack()
@@ -102,4 +137,12 @@ class Unit:
                 else: self.facingFront = self.FaceBack()
 
     def SetSprite(self, index:int):
+        """
+        Set the current sprite index.
+        Args:
+            index (int): New sprite index.
+        Returns:
+            None
+        """
+        
         self.spriteIndex = index

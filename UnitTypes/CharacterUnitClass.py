@@ -5,6 +5,23 @@ from UnitTypes.UnitClass import Unit
 
 class CharacterUnit(Unit):
     def __init__(self, name:str, spritesheet:object, spriteIndex:int, reach:int, power:int, critChance:int, critDamage:int, health:int, speed:int, defense:int, team:int, isAlive:bool):
+        """
+        Create a character unit with health, movement, and combat stats.
+        Args:
+            name (str): Unit name.
+            spritesheet (object): Spritesheet used for rendering.
+            spriteIndex (int): Base sprite index.
+            reach (int): Attack range.
+            power (int): Base attack damage.
+            critChance (int): Critical hit chance.
+            critDamage (int): Extra damage on critical hit.
+            health (int): Starting health.
+            speed (int): Movement range.
+            defense (int): Defensive value.
+            team (int): Team ID.
+            isAlive (bool): Whether the unit starts alive.
+        """
+
         self.isAlive = isAlive
 
         super().__init__(name, spritesheet, spriteIndex, reach, power, critChance, critDamage, team)
@@ -26,19 +43,35 @@ class CharacterUnit(Unit):
 
 
     def TakeDamage(self, damage):
+        """
+        Unused"""
         self.health = max(0, self.health - damage)
         return(damage)
     
 
     def CheckForLife(self):
+        """
+        Unused
+        """
         return(self.health)
     
     
     def KillSelf(self):
+        """
+        Unused
+        """
         self.isAlive = False
 
 
     def SetPath(self, path:list):
+        """
+        Assign a movement path to the unit.
+        Args:
+            path (list): List of tiles to move through.
+        Returns:
+            bool: True if path was set, False otherwise.
+        """
+
         if not self.path and path:
             self.path = path
             return True
@@ -46,6 +79,15 @@ class CharacterUnit(Unit):
     
 
     def UpdateRelativePosition(self, deltaTime, tileMap):
+        """
+        Move the unit smoothly along its path.
+        Args:
+            deltaTime (float): Time since last frame.
+            tileMap (TileMap): Current tile map.
+        Returns:
+            None
+        """
+
         # Amount of pixels moved per frame (sort of, its like directional pixels not bound by the grid if that makes sense. Distance formula)
         # Change the 4 to speed it up or slow it down
         deltaTime = 1 if deltaTime == 0 else deltaTime
@@ -107,10 +149,23 @@ class CharacterUnit(Unit):
 
 
     def MovementCheck(self):
+        """
+        Check if the unit is currently moving.
+        Returns:
+            bool: True if moving, False otherwise.
+        """
         return True if self.path else False
     
     
     def UpdateAnimation(self, deltatime):
+        """
+        Advance the walking animation cycle.
+        Args:
+            deltatime (float): Time since last frame.
+        Returns:
+            None
+        """
+
         self.frameTimer += deltatime
         if self.frameTimer >= self.frameLenght:
             self.frameTimer = 0
@@ -121,4 +176,13 @@ class CharacterUnit(Unit):
 
 
     def Blit(self, screen:pygame.surface, x:int, y:int):
+        """
+        Draw the moving unit with interpolation offsets.
+        Args:
+            screen (Surface): Pygame screen surface.
+            x (int): Base X position.
+            y (int): Base Y position.
+        Returns:
+            None
+        """
         screen.blit(self.spritesheet.GetSprite(self.spriteIndex, (not self.facingLeft)), (x + self.relativeX, y + self.relativeY - self.heightOfSprite + 32))

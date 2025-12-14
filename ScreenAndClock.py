@@ -1,6 +1,12 @@
 import pygame
 
 def InitializeScreenAndClock():
+    """
+    Initialize Pygame, create a fullscreen window, and set up timing globals.
+    Returns:
+        None
+    """
+    
     pygame.init()
     global screen
     global screenWidth

@@ -2,6 +2,12 @@ import pygame
 import Sprites.SpritesheetClass as SS
 
 def LoadSpriteAssets():
+     """
+    Load all sprite assets and store them as global variables.
+    This includes tiles, characters, spritesheets, and tile state mappings.
+    Returns:
+        None
+    """
      global tileWidth
      global tileHeight
      tileWidth, tileHeight = 64, 32
