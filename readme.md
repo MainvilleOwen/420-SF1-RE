@@ -2,7 +2,7 @@
 
 ## Description
 
-This project is a **turn-based tactical grid engine** written in Python using **Pygame**. It is inspired by games such as *Final Fantasy Tactics* and focuses on grid-based movement, tile interaction, and clean separation between game systems (tiles, units, rendering, and input).
+This project is a **turn-based tactical grid engine** written in Python using **Pygame**. It is inspired by games such as *Final Fantasy Tactics* and focuses on isometric grid-based movement, tile interaction, and clean separation between game systems (tiles, units, rendering, and input).
 
 The engine features an **isometric tilemap renderer** with layered draw order to ensure tiles and units are drawn correctly in 3D space. Tiles can have different properties (walkable, unwalkable, special visuals), and units can occupy tiles both logically and visually.
 
